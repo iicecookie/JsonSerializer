@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navicon.JsonSerializer", "Navicon.JsonSerializer\Navicon.JsonSerializer.csproj", "{088E52FA-82A4-418B-BA5C-678A2B7FA280}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navicon.JsonSerializer.Models", "Navicon.JsonSerializer.Models\Navicon.JsonSerializer.Models.csproj", "{F1B7EFC6-9DA6-45B3-A36E-78B2E0FC79AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navicon.JsonSerializer.Metadata", "Navicon.JsonSerializer.Metadata\Navicon.JsonSerializer.Metadata.csproj", "{71A0AFFD-B8A6-477C-A035-261635C93879}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{088E52FA-82A4-418B-BA5C-678A2B7FA280}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{088E52FA-82A4-418B-BA5C-678A2B7FA280}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{088E52FA-82A4-418B-BA5C-678A2B7FA280}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{088E52FA-82A4-418B-BA5C-678A2B7FA280}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1B7EFC6-9DA6-45B3-A36E-78B2E0FC79AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1B7EFC6-9DA6-45B3-A36E-78B2E0FC79AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1B7EFC6-9DA6-45B3-A36E-78B2E0FC79AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1B7EFC6-9DA6-45B3-A36E-78B2E0FC79AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71A0AFFD-B8A6-477C-A035-261635C93879}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71A0AFFD-B8A6-477C-A035-261635C93879}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71A0AFFD-B8A6-477C-A035-261635C93879}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71A0AFFD-B8A6-477C-A035-261635C93879}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {13D166FD-4E97-4D02-BB1C-65A4E01AB439}
+	EndGlobalSection
+EndGlobal
