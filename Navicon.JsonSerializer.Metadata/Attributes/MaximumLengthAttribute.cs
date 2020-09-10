@@ -6,10 +6,10 @@ namespace Navicon.JsonSerializer.Metadata.Attributes
     [AttributeUsage(AttributeTargets.Property)]
     public class MaximumLengthAttribute : ValidationAttribute
     {
-        public int MaxLength { get; set; }
-
-        public MaximumLengthAttribute()
-        { }
+        public int MaxLength
+        {
+            get; set;
+        }
 
         public MaximumLengthAttribute(int length)
         {

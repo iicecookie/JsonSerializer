@@ -5,4 +5,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Navicon.JsonSerializer.Models\Navicon.JsonSerializer.Models.csproj" />
+  </ItemGroup>
+
 </Project>

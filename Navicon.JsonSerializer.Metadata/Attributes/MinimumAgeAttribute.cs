@@ -3,10 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Navicon.JsonSerializer.Metadata.Attributes
 {
-    [AttributeUsage(AttributeTargets.Property)]
+  //  [AttributeUsage(AttributeTargets.Field)]
     public class MinimumAgeAttribute : ValidationAttribute
     {
-        public DateTime MinDateofBirth { get; set; }
+        public DateTime MinDateofBirth
+        {
+            get; set;
+        }
 
         public MinimumAgeAttribute(int year, int month, int day)
         {
@@ -22,7 +25,7 @@ namespace Navicon.JsonSerializer.Metadata.Attributes
         {
             if (value != null)
             {
-                if ((DateTime)value <= MinDateofBirth)
+                if (MinDateofBirth.CompareTo((DateTime)value) >= 0)
                     return true;
                 else
                     this.ErrorMessage = "Тебе бы подрасти, малой :c";

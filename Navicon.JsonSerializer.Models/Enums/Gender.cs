@@ -6,6 +6,8 @@ namespace Navicon.JsonSerializer.Models.Enums
 {
     public enum Gender
     {
+        Male,
+        Female,
         Agender,
         Androgyne,
         Androgynous,

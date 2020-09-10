@@ -7,7 +7,10 @@ namespace Navicon.JsonSerializer.Metadata.Attributes
     [AttributeUsage(AttributeTargets.Property)]
     public class PhoneRegexAttribute : ValidationAttribute
     {
-        public string Regex { get; set; }
+        public string Regex
+        {
+            get; set;
+        }
 
         public PhoneRegexAttribute(string expression)
         {

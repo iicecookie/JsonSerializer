@@ -7,14 +7,33 @@ namespace Navicon.JsonSerializer.Models
     [Description("Место жительство человека")]
     public class Address : ICloneable
     {
-        public string Country { get; set; }
-        public string Sity    { get; set; }
-        public string AddressFull      { get; set; }
-        public AddressType AddressType { get; set; }
+        public string Country
+        {
+            get; set;
+        }
+
+        public string Sity
+        {
+            get; set;
+        }
+
+        public string LifeLocation
+        {
+            get; set;
+        }
+
+        public AddressType AddressType
+        {
+            get; set;
+        }
+
+        #region interfaces
 
         public object Clone()
         {
             return (Address)this.MemberwiseClone();
         }
+
+        #endregion
     }
 }

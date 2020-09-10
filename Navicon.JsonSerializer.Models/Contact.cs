@@ -8,28 +8,78 @@ namespace Navicon.JsonSerializer.Models
     public class Contact : ICloneable
     {
         [MaximumLength(10)]
-        public string FirstName     { get; set; }
+        public string FirstName
+        {
+            get; set;
+        }
 
         [MaximumLength(10)]
-        public string SecondName    { get; set; }
+        public string SecondName
+        {
+            get; set;
+        }
 
         [MaximumLength(10)]
-        public string LastName      { get; set; }
+        public string LastName
+        {
+            get; set;
+        }
 
-        public Gender Gender        { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public string ITN           { get; set; } // Individual Taxpayer Number
+        public Gender Gender
+        {
+            get; set;
+        }
 
-        [PhoneRegex(@"^\+[1-9]\d{3}-\d{3}-\d{4}$")]
-        public string PhoneNumber   { get; set; }
+        [MinimumAge(2000, 10, 10)]
+        public DateTime DateOfBirth
+        {
+            get; set;
+        }
 
-        [MinimumAge(2020,10,10)]
-        public int Age { get => new DateTime(DateTime.Now.Subtract(DateOfBirth).Ticks).Year - 1; }
+        public string ITN
+        {
+            get; set;
+        } 
+        // Individual Taxpayer Number
+
+        [PhoneRegex(@"\+? ?3?[ -]?8?[ -]?\(?(\d[ -]?){3}\)?[ -]?(\d[ -]?){7}")]
+        public string PhoneNumber
+        {
+            get; set;
+        }
+
+        public readonly int Age;
+
+        public Contact()
+        {
+
+        }
+
+        public Contact(string firstName, string secondName, string lastName, 
+                       Gender gender, DateTime birth, 
+                       string itn = "", string phoneNumber = "") : base()
+        {
+            FirstName = firstName;
+            SecondName = secondName;
+            LastName = lastName;
+            Gender = gender;
+            DateOfBirth = birth;
+            ITN = itn;
+            PhoneNumber = phoneNumber;
+
+            var Age = DateTime.Today.Year - DateOfBirth.Year;
+
+            if (DateOfBirth.Date > DateTime.Today.AddYears(-Age)) Age--;
+        }
+
+        #region interfaces
 
         public object Clone()
         {
             return (Contact)this.MemberwiseClone();
         }
+
+        #endregion
 
         public override bool Equals(object obj)
         {
@@ -45,8 +95,8 @@ namespace Navicon.JsonSerializer.Models
                 throw new InvalidCastException();
             }
 
-            return contact.FirstName.Equals(FirstName) && 
-                   contact.SecondName.Equals(SecondName) && 
+            return contact.FirstName.Equals(FirstName) &&
+                   contact.SecondName.Equals(SecondName) &&
                    contact.LastName.Equals(LastName) &&
                    contact.Gender.Equals(Gender) &&
                    contact.DateOfBirth.Equals(DateOfBirth) &&
