@@ -1,6 +1,9 @@
-﻿using Navicon.JsonSerializer.Models;
+﻿using Navicon.JsonSerializer.Metadata.Attributes.Serializing;
+using Navicon.JsonSerializer.Models;
 using Navicon.JsonSerializer.Models.Enums;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -10,38 +13,94 @@ namespace Navicon.JsonSerializer.Serializer
 {
     public class ContactSerializer
     {
-        private string _filename;
+        private string _filename; // удалить
+
+        private readonly PropertyInfo[] contactPropertyes;
 
         public ContactSerializer(string filename)
         {
             _filename = filename;
+
+            contactPropertyes = typeof(Contact).GetProperties();
         }
 
-        public string Serialize(Contact person)
+        public string Serialize(object obj)
         {
             StringBuilder stringBuilder = new StringBuilder(200);
 
             stringBuilder.Append("{");
 
-            foreach (PropertyInfo propertyInfo in person.GetType().GetProperties())
+            foreach (PropertyInfo propertyInfo in obj.GetType().GetProperties())
             {
+                if (isSerializable(propertyInfo) == false) continue;
+
                 stringBuilder.Append($"\"{propertyInfo.Name}\":");
 
-                if (propertyInfo.PropertyType == string.Empty.GetType() ||
-                    propertyInfo.PropertyType == DateTime.Now.GetType())
-                {
-                    stringBuilder.Append($"\"{propertyInfo.GetValue(person)}\"");
-                }
-                else
-                {
-                    stringBuilder.Append($"{propertyInfo.GetValue(person)}");
-                }
+                stringBuilder.Append(SerializePropertyValue(propertyInfo, obj));
+
                 stringBuilder.Append(",");
             }
+
+            // remove the last ','
+            stringBuilder.Remove(stringBuilder.Length - 1, 1); 
 
             stringBuilder.Append("}");
 
             return stringBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Проверяет атрибуты свойства
+        /// </summary>
+        /// <param name="propertyInfo">Свойство класса</param>
+        /// <returns>
+        /// true - если у свойства есть атрибут Serializable
+        /// falce - если у свойства есть атрибут NonSerializable или отсутствует атрибут, реализующий ISerializable
+        /// </returns>
+        private bool isSerializable(PropertyInfo propertyInfo)
+        {
+            object[] customAttributes = propertyInfo.GetCustomAttributes(true);
+
+            var serializableInterface = customAttributes.Where(attr => attr.GetType()
+                                                               .GetInterfaces()
+                                                               .Where(i => i.Name == "ISerializable")
+                                                               .FirstOrDefault() != null)
+                                                        .FirstOrDefault();
+
+            if (serializableInterface == null) return false;
+
+            return ((ISerializable)serializableInterface).isSerializable;
+        }
+
+        /// <summary>
+        /// Сериализует значение свойства 
+        /// </summary>
+        /// <param name="propertyInfo">информация о свойстве</param>
+        /// <param name="obj">класс-владелец свойства</param>
+        /// <returns>сериализованое представление значения</returns>
+        public string SerializePropertyValue(PropertyInfo propertyInfo, object obj)
+        {
+            if (propertyInfo.PropertyType == typeof(Address))
+            {
+                return Serialize((obj as Contact).Address);
+            }
+            else if (propertyInfo.PropertyType == typeof(string))
+            {
+                return $"\"{propertyInfo.GetValue(obj)}\"";
+            }
+            else if (propertyInfo.PropertyType.IsEnum)
+            {
+                return $"{(int)propertyInfo.GetValue(obj)}";
+            }
+            else if (propertyInfo.PropertyType == typeof(DateTime))
+            {
+                return $"\"{((DateTime)propertyInfo.GetValue(obj)).ToString("dd/M/yyyy", CultureInfo.InvariantCulture)}\"";
+            }
+            else
+            {
+                // числовые типы без кавычек
+                return $"{propertyInfo.GetValue(obj)}";
+            }
         }
 
         public Contact Deserialize(string serializedText)

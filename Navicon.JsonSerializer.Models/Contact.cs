@@ -1,59 +1,83 @@
 ﻿using Navicon.JsonSerializer.Metadata.Attributes;
 using Navicon.JsonSerializer.Models.Enums;
 using System;
+using System.Globalization;
+using SerializableAttribute = Navicon.JsonSerializer.Metadata.Attributes.SerializableAttribute;
 
 namespace Navicon.JsonSerializer.Models
 {
     [Description("Описание человека")]
-    public class Contact : ICloneable
+    public sealed class Contact : ICloneable
     {
+        [Serializable]
         [MaximumLength(10)]
         public string FirstName
         {
             get; set;
         }
 
+        [Serializable]
         [MaximumLength(10)]
         public string SecondName
         {
             get; set;
         }
 
+        [Serializable]
         [MaximumLength(10)]
         public string LastName
         {
             get; set;
         }
 
+        [Serializable]
         public Gender Gender
         {
             get; set;
         }
 
+        [Serializable]
         [MinimumAge(2000, 10, 10)]
         public DateTime DateOfBirth
         {
             get; set;
         }
 
+        /// <summary>
+        /// Individual Taxpayer Number
+        /// </summary>
+        [Serializable]
         public string ITN
         {
             get; set;
         }
-        // Individual Taxpayer Number
 
+        [Serializable]
         public Address Address
         {
             get; set;
         }
 
+        [Serializable]
         [PhoneRegex(@"\+? ?3?[ -]?8?[ -]?\(?(\d[ -]?){3}\)?[ -]?(\d[ -]?){7}")]
         public string PhoneNumber
         {
             get; set;
         }
 
-        public readonly int Age;
+        /// <summary>
+        /// Возраст контакта
+        /// </summary>
+        [NonSerializable]
+        public int Age
+        {
+            get
+            {
+                int Years = new DateTime(DateTime.Now.Subtract(DateOfBirth).Ticks).Year - 1;
+
+                return Years;
+            }
+        }
 
         public Contact()
         {
@@ -72,9 +96,6 @@ namespace Navicon.JsonSerializer.Models
             ITN = itn;
             Address = address;
             PhoneNumber = phoneNumber;
-
-            Age = DateTime.Today.Year - DateOfBirth.Year;
-            Age--;
         }
 
         #region interfaces
@@ -99,21 +120,49 @@ namespace Navicon.JsonSerializer.Models
 
             if (contact == null)
             {
-                throw new InvalidCastException();
+                return false;
+                // throw new InvalidCastException();
             }
 
-            return contact.FirstName.Equals(FirstName) &&
+            return contact.FirstName .Equals(FirstName) &&
                    contact.SecondName.Equals(SecondName) &&
-                   contact.LastName.Equals(LastName) &&
+                   contact.LastName  .Equals(LastName) &&
+                   contact.ITN   .Equals(ITN) &&
                    contact.Gender.Equals(Gender) &&
                    contact.DateOfBirth.Equals(DateOfBirth) &&
-                   contact.ITN.Equals(ITN) &&
+                   contact.PhoneNumber.Equals(PhoneNumber);
+        }
+
+        public bool Equals(Contact contact)
+        {
+            if (contact == null)
+            {
+                throw new ArgumentNullException();
+                // or return false;
+            }
+
+            return contact.FirstName .Equals(FirstName) &&
+                   contact.SecondName.Equals(SecondName) &&
+                   contact.LastName  .Equals(LastName) &&
+                   contact.ITN   .Equals(ITN) &&
+                   contact.Gender.Equals(Gender) &&
+                   contact.DateOfBirth.Equals(DateOfBirth) &&
                    contact.PhoneNumber.Equals(PhoneNumber);
         }
 
         public override int GetHashCode()
         {
-            return FirstName.GetHashCode() ^ SecondName.GetHashCode() ^ LastName.GetHashCode();
+            int hash = (int)2111136261;
+
+            hash = (hash * 16777619) ^ FirstName.GetHashCode();
+            hash = (hash * 16777619) ^ SecondName.GetHashCode();
+            hash = (hash * 16777619) ^ LastName.GetHashCode();
+            hash = (hash * 16777619) ^ DateOfBirth.GetHashCode();
+            if (Address != null)
+            {
+                hash = (hash * 16777619) ^ Address.GetHashCode();
+            }
+            return hash;
         }
 
         public override string ToString()
