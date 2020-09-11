@@ -1,5 +1,6 @@
 ﻿using Navicon.JsonSerializer.Models;
 using Navicon.JsonSerializer.Models.Enums;
+using Navicon.JsonSerializer.Serializer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,14 +15,25 @@ namespace Navicon.JsonSerializer
                 firstName   : "Maxim",
                 secondName  : "Bukanov",
                 lastName    : "...",
-                gender      : Gender.Male,
+                gender      : Gender.Female,
                 birth : new DateTime(1998, 11, 22),
                 itn         : "123124141241",
                 phoneNumber : "+7(925)561-84-06"
             );
 
+            Console.WriteLine(contact);
 
-            Console.WriteLine(ValidateModel(contact));
+            var serializer = new ContactSerializer("firstTry");
+
+            var serializedContact = serializer.Serialize(contact);
+            Console.WriteLine(serializedContact);
+            Console.WriteLine("\n");
+
+            Contact deserializedContact = serializer.Deserialize(serializedContact);
+            Console.WriteLine(deserializedContact);
+            Console.WriteLine("\n");
+
+            Console.WriteLine(deserializedContact);
         }
 
         public static bool ValidateModel(object obj)

@@ -67,9 +67,8 @@ namespace Navicon.JsonSerializer.Models
             ITN = itn;
             PhoneNumber = phoneNumber;
 
-            var Age = DateTime.Today.Year - DateOfBirth.Year;
-
-            if (DateOfBirth.Date > DateTime.Today.AddYears(-Age)) Age--;
+            Age = DateTime.Today.Year - DateOfBirth.Year;
+            Age--;
         }
 
         #region interfaces

@@ -6,7 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Navicon.JsonSerializer.Models\Navicon.JsonSerializer.Models.csproj" />
+    <ProjectReference Include="..\Serializer\Navicon.JsonSerializer.Serializer.csproj" />
   </ItemGroup>
 
 </Project>
