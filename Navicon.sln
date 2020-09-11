@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navicon.JsonSerializer.Mode
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navicon.JsonSerializer.Metadata", "Navicon.JsonSerializer.Metadata\Navicon.JsonSerializer.Metadata.csproj", "{71A0AFFD-B8A6-477C-A035-261635C93879}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navicon.JsonSerializer.Serializer", "Serializer\Navicon.JsonSerializer.Serializer.csproj", "{999C31CE-9E8E-4A6E-8A9D-26C2F7C0314B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navicon.JsonSerializer.Serializer", "Serializer\Navicon.JsonSerializer.Serializer.csproj", "{999C31CE-9E8E-4A6E-8A9D-26C2F7C0314B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JsonSerializer", "JsonSerializer", "{488998A9-AB31-475F-9B2B-96DE6AFE7564}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +38,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{088E52FA-82A4-418B-BA5C-678A2B7FA280} = {488998A9-AB31-475F-9B2B-96DE6AFE7564}
+		{F1B7EFC6-9DA6-45B3-A36E-78B2E0FC79AE} = {488998A9-AB31-475F-9B2B-96DE6AFE7564}
+		{71A0AFFD-B8A6-477C-A035-261635C93879} = {488998A9-AB31-475F-9B2B-96DE6AFE7564}
+		{999C31CE-9E8E-4A6E-8A9D-26C2F7C0314B} = {488998A9-AB31-475F-9B2B-96DE6AFE7564}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {13D166FD-4E97-4D02-BB1C-65A4E01AB439}
