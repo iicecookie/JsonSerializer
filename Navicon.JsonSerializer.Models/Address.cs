@@ -35,5 +35,10 @@ namespace Navicon.JsonSerializer.Models
         }
 
         #endregion
+
+        public override string ToString()
+        {
+            return $"Страна: {Country}, город {Sity}, {AddressType} адрес проживания: {LifeLocation}";
+        }
     }
 }

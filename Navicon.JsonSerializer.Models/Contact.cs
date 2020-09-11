@@ -39,8 +39,13 @@ namespace Navicon.JsonSerializer.Models
         public string ITN
         {
             get; set;
-        } 
+        }
         // Individual Taxpayer Number
+
+        public Address Address
+        {
+            get; set;
+        }
 
         [PhoneRegex(@"\+? ?3?[ -]?8?[ -]?\(?(\d[ -]?){3}\)?[ -]?(\d[ -]?){7}")]
         public string PhoneNumber
@@ -56,7 +61,7 @@ namespace Navicon.JsonSerializer.Models
         }
 
         public Contact(string firstName, string secondName, string lastName, 
-                       Gender gender, DateTime birth, 
+                       Gender gender, DateTime birth, Address address,
                        string itn = "", string phoneNumber = "") : base()
         {
             FirstName = firstName;
@@ -65,6 +70,7 @@ namespace Navicon.JsonSerializer.Models
             Gender = gender;
             DateOfBirth = birth;
             ITN = itn;
+            Address = address;
             PhoneNumber = phoneNumber;
 
             Age = DateTime.Today.Year - DateOfBirth.Year;
@@ -75,7 +81,9 @@ namespace Navicon.JsonSerializer.Models
 
         public object Clone()
         {
-            return (Contact)this.MemberwiseClone();
+            Contact contact = (Contact)this.MemberwiseClone();
+            contact.Address = (Address)this.Address.Clone();
+            return contact;
         }
 
         #endregion
@@ -110,7 +118,12 @@ namespace Navicon.JsonSerializer.Models
 
         public override string ToString()
         {
-            return $"{FirstName} {SecondName} {LastName}, Номер телефона: {PhoneNumber}, Пол: {Gender}, Дата рождения: {DateOfBirth} ({Age} год(а)), ИНН: {ITN}";
+            return $"{FirstName} {SecondName} {LastName}, " +
+                   $"Номер телефона: {PhoneNumber}, " +
+                   $"Пол: {Gender}, " +
+                   $"Дата рождения: {DateOfBirth} ({Age} год(а)), " +
+                   $"Место жительства: {Address}, " +
+                   $"ИНН: {ITN}";
         }
     }
 }

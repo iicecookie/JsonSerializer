@@ -16,6 +16,13 @@ namespace Navicon.JsonSerializer
                 secondName  : "Bukanov",
                 lastName    : "...",
                 gender      : Gender.Female,
+                address: new Address()
+                {
+                    Sity = "Moscow",
+                    AddressType = AddressType.Actual,
+                    Country = "Russia",
+                    LifeLocation = ""
+                },
                 birth : new DateTime(1998, 11, 22),
                 itn         : "123124141241",
                 phoneNumber : "+7(925)561-84-06"
@@ -23,17 +30,17 @@ namespace Navicon.JsonSerializer
 
             Console.WriteLine(contact);
 
-            var serializer = new ContactSerializer("firstTry");
-
-            var serializedContact = serializer.Serialize(contact);
-            Console.WriteLine(serializedContact);
-            Console.WriteLine("\n");
-
-            Contact deserializedContact = serializer.Deserialize(serializedContact);
-            Console.WriteLine(deserializedContact);
-            Console.WriteLine("\n");
-
-            Console.WriteLine(deserializedContact);
+      //      var serializer = new ContactSerializer("firstTry");
+      //
+      //      var serializedContact = serializer.Serialize(contact);
+      //      Console.WriteLine(serializedContact);
+      //      Console.WriteLine("\n");
+      //
+      //      Contact deserializedContact = serializer.Deserialize(serializedContact);
+      //      Console.WriteLine(deserializedContact);
+      //      Console.WriteLine("\n");
+      //
+      //      Console.WriteLine(deserializedContact);
         }
 
         public static bool ValidateModel(object obj)
