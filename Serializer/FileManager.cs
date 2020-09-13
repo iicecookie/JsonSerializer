@@ -5,43 +5,81 @@ namespace Navicon.JsonSerializer.Serializer
 {
     public class FileManager
     {
-        public void WriteInFile(string serializedText, string fileName)
-        {   // 
-            // using (StreamWriter writer = new StreamWriter(fileName))
-            // {
-            //     var location = System.Reflection.Assembly.GetCallingAssembly().Location;
-            // 
-            //     var path = Path.GetDirectoryName(location);
-            // 
-            //     writer.WriteLine(serializedText);
-            // }
-            
-            // создаем каталог для файла
-            string startupPath = Environment.CurrentDirectory;
+        /// <summary>
+        /// Записывает текст в файл
+        /// </summary>
+        /// <param name="serializedText">Текст для записи</param>
+        /// <param name="fileName">Имя файла</param>
+        /// <param name="path">Путь к файлу</param>
+        public void WriteInFile(string Text, string fileName, string path = @"C:\Navicon\JsonSerializer")
+        {
+            if (IsValidPath(path) == false)
+            {
+                throw new ArgumentException("Путь к файлу не корректен");
+            }
 
-            DirectoryInfo dirInfo = new DirectoryInfo(startupPath);
-            if (!dirInfo.Exists)
+            DirectoryInfo dirInfo = new DirectoryInfo(path);
+
+            if (dirInfo.Exists==false)
             {
                 dirInfo.Create();
             }
-            Console.WriteLine("Введите строку для записи в файл:");
-            string text = Console.ReadLine();
 
-            // запись в файл
-           // using (FileStream fstream = new FileStream($"{path}\{fileName}.txt", FileMode.OpenOrCreate))
-           // {
-           //     // преобразуем строку в байты
-           //     byte[] array = System.Text.Encoding.Default.GetBytes(text);
-           //     // запись массива байтов в файл
-           //     fstream.Write(array, 0, array.Length);
-           //     Console.WriteLine("Текст записан в файл");
-           // }
-            
+            using (FileStream fstream = new FileStream($"{path}\\{fileName}.txt", FileMode.Create))
+            {
+                byte[] array = System.Text.Encoding.Default.GetBytes(Text);
+
+                fstream.Write(array, 0, array.Length);
+            }
         }
 
-        private void ReadFromFile(string serializedText)
+        /// <summary>
+        /// Проверяет путь к файлу на корректность использования
+        /// </summary>
+        /// <param name="path">Путь к файлу в файловой системе Windows</param>
+        /// <returns></returns>
+        private bool IsValidPath(string path)
         {
+            bool isValid = true;
 
+            try
+            {
+                string fullPath = Path.GetFullPath(path);
+
+                string root = Path.GetPathRoot(path);
+
+                isValid = string.IsNullOrEmpty(root.Trim(new char[] { '\\', '/' })) == false;
+            }
+            catch (Exception ex)
+            {
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        public string ReadFromFile(string fileName, string path = @"C:\Navicon\JsonSerializer")
+        {
+            if (IsValidPath(path) == false)
+            {
+                throw new ArgumentException("Путь к файлу не корректен");
+            }
+
+            DirectoryInfo dirInfo = new DirectoryInfo(path);
+
+            if (dirInfo.Exists == false)
+            {
+                throw new FileNotFoundException();
+            }
+
+            using (FileStream fstream = File.OpenRead($"{path}\\{fileName}.txt"))
+            {
+                byte[] array = new byte[fstream.Length];
+
+                fstream.Read(array, 0, array.Length);
+
+                return System.Text.Encoding.Default.GetString(array);
+            }
         }
     }
 }
