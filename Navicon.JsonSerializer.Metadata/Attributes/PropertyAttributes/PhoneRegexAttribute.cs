@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 namespace Navicon.JsonSerializer.Metadata.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class PhoneRegexAttribute : ValidationAttribute
+    public class PhoneRegexAttribute : Attribute, IValidation
     {
         public string Regex
         {
@@ -17,7 +17,7 @@ namespace Navicon.JsonSerializer.Metadata.Attributes
             Regex = expression;
         }
 
-        public override bool IsValid(object value)
+        public bool IsValid(object value, out string errorMessage)
         {
             if (value != null)
             {
@@ -26,11 +26,16 @@ namespace Navicon.JsonSerializer.Metadata.Attributes
 
                 if (matches.Count > 0)
                 {
-                    return true;                    
+                    errorMessage = string.Empty;
+                    return true;
                 }
                 else
-                    this.ErrorMessage = "Номер телефона не соответствует установленному формату";
+                {
+                    errorMessage = "Номер телефона не соответствует установленному формату";
+                    return false;
+                }
             }
+            errorMessage = "Значение отсутствует";
             return false;
         }
     }

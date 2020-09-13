@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Navicon.JsonSerializer.Metadata.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class MaximumLengthAttribute : ValidationAttribute
+    public class MaximumLengthAttribute : Attribute, IValidation
     {
         public int MaxLength
         {
@@ -16,16 +16,22 @@ namespace Navicon.JsonSerializer.Metadata.Attributes
             MaxLength = length;
         }
 
-        public override bool IsValid(object value)
+        public bool IsValid(object value, out string errorMessage)
         {
             if (value != null)
             {
                 if (value.ToString().Length < MaxLength)
+                {
+                    errorMessage = string.Empty;
                     return true;
+                }
                 else
-                    this.ErrorMessage = $"Максимальная длина строки не должна привышать {MaxLength}";
+                {
+                    errorMessage = $"Максимальная длина строки не должна привышать {MaxLength}";
+                    return false;
+                }
             }
-
+            errorMessage = "Значение отсутствует";
             return false;
         }
     }
