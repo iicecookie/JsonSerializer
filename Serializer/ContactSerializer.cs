@@ -13,17 +13,48 @@ namespace Navicon.JsonSerializer.Serializer
 {
     public class ContactSerializer
     {
-        private string _filename; // удалить
+        private readonly FileManager _fileManager;
+
+        private string _filename;
 
         private readonly PropertyInfo[] contactPropertyes;
 
-        public ContactSerializer(string filename)
+        public ContactSerializer(FileManager fileManager, string filename)
         {
+            _fileManager = fileManager;
+
             _filename = filename;
 
             contactPropertyes = typeof(Contact).GetProperties();
         }
 
+        #region Serializing
+        /// <summary>
+        /// Преобразование списка объектов в JSON формат
+        /// </summary>
+        /// <param name="obj">Список объектов сериализации</param>
+        /// <returns>представление объекта в JSON формате</returns>
+        public string Serialize(List<Contact> contacts)
+        {
+            StringBuilder stringBuilder = new StringBuilder(200);
+
+            foreach (var contact in contacts)
+            {
+                stringBuilder.Append(Serialize(contact));
+                stringBuilder.Append(",");
+            }
+
+            // remove the last ','
+            stringBuilder.Remove(stringBuilder.Length - 1, 1);
+
+            return stringBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Преобразование объекта в JSON формат
+        /// </summary>
+        /// <param name="obj">Объект сериализации</param>
+        /// <returns>представление объекта в JSON формате</returns>
         public string Serialize(object obj)
         {
             StringBuilder stringBuilder = new StringBuilder(200);
@@ -42,7 +73,7 @@ namespace Navicon.JsonSerializer.Serializer
             }
 
             // remove the last ','
-            stringBuilder.Remove(stringBuilder.Length - 1, 1); 
+            stringBuilder.Remove(stringBuilder.Length - 1, 1);
 
             stringBuilder.Append("}");
 
@@ -50,7 +81,7 @@ namespace Navicon.JsonSerializer.Serializer
         }
 
         /// <summary>
-        /// Проверяет атрибуты свойства
+        /// Проверяет, сериализуемо ли свойство
         /// </summary>
         /// <param name="propertyInfo">Свойство класса</param>
         /// <returns>
@@ -102,30 +133,63 @@ namespace Navicon.JsonSerializer.Serializer
                 return $"{propertyInfo.GetValue(obj)}";
             }
         }
+        #endregion
 
+        #region Deserializing
+        /// <summary>
+        /// Преобразование текста в объект
+        /// </summary>
+        /// <param name="serializedText">Текст, хранящий объект класса Json</param>
+        /// <returns>
+        /// Объект класса Contact, заполненый данными
+        /// </returns>
         public Contact Deserialize(string serializedText)
         {
+            var nameValuePairs = (Dictionary<string, object>)DeserializeJsonInDictionary(serializedText);
+
             Contact contact = new Contact();
 
-            Console.WriteLine(serializedText);
-            var lines = serializedText.Split(',');
-
-            for (int i = 0; i < lines.Length - 1; i++)
+            foreach (PropertyInfo propertyInfo in contact.GetType().GetProperties())
             {
-                var (attributeName, attributeValue) = GetNameAndValue(lines[i]);
-
-                foreach (PropertyInfo propertyInfo in contact.GetType().GetProperties())
+                if (isSerializable(propertyInfo) == true)
                 {
-                    if (propertyInfo.Name == attributeName && attributeName == "Gender")
+                    if      (propertyInfo.PropertyType.IsEnum)
                     {
-                        Gender gender = (Gender)Enum.Parse(typeof(Gender), attributeValue);
+                        Gender gender = (Gender)Enum.Parse(typeof(Gender), (string)nameValuePairs[propertyInfo.Name]);
 
                         propertyInfo.SetValue(contact, Convert.ChangeType(gender, propertyInfo.PropertyType), null);
-                        break;
                     }
-                    else if (propertyInfo.Name == attributeName)
+                    else if (propertyInfo.PropertyType.Equals(typeof(DateTime)))
                     {
-                        propertyInfo.SetValue(contact, Convert.ChangeType(attributeValue, propertyInfo.PropertyType), null);
+                        DateTime birthday = DateTime.Parse((string)nameValuePairs[propertyInfo.Name]);
+
+                        propertyInfo.SetValue(contact, birthday, null);
+                    }
+                    else if (propertyInfo.PropertyType.Equals(typeof(Address)))
+                    {
+                        Address address = new Address();
+
+                        Dictionary<string, object> addressNameValue = (Dictionary<string, object>)nameValuePairs[propertyInfo.Name];
+
+                        foreach (PropertyInfo propertyAddressInfo in address.GetType().GetProperties())
+                        {
+                            if (propertyAddressInfo.PropertyType.IsEnum)
+                            {
+                                AddressType addressType = (AddressType)Enum.Parse(typeof(AddressType), (string)addressNameValue[propertyAddressInfo.Name]);
+
+                                propertyAddressInfo.SetValue(address, Convert.ChangeType(addressType, propertyAddressInfo.PropertyType), null);
+                            }
+                            else
+                            {
+                                propertyAddressInfo.SetValue(address, addressNameValue[propertyAddressInfo.Name], null);
+                            }
+                        }
+
+                        propertyInfo.SetValue(contact, address, null);
+                    }
+                    else
+                    {
+                        propertyInfo.SetValue(contact, nameValuePairs[propertyInfo.Name], null);
                     }
                 }
             }
@@ -133,21 +197,82 @@ namespace Navicon.JsonSerializer.Serializer
             return contact;
         }
 
-        private (string, string) GetNameAndValue(string line)
+        /// <summary>
+        /// Преобразует текст Json формата в Dictionary<name,value> 
+        /// </summary>
+        /// <param name="serializedText">Текст Json формата</param>
+        /// <returns>Dictionary<name,value></returns>
+        public object DeserializeJsonInDictionary(string serializedText)
         {
-            var oneLine = line.Split(new char[] { ':' }, 2);
+            var nameValues = new Dictionary<string, object>();
 
-            int pFrom = oneLine[0].IndexOf("\"") + "\"".Length;
-            int pTo = oneLine[0].LastIndexOf("\"");
-            string attributeName = oneLine[0].Substring(pFrom, pTo - pFrom);
+            var stringBuilder = new StringBuilder(serializedText);
 
-            pFrom = oneLine[1].IndexOf("\"") + "\"".Length;
-            pTo = oneLine[1].LastIndexOf("\"");
-            if (pTo < 0) pTo = oneLine[1].Length;
+            for (int i = 0; i < stringBuilder.Length; i++)
+            {
+                if (stringBuilder[i] == ':')
+                {
+                    string name = GetName(stringBuilder.ToString(), i);
 
-            string attributeValue = oneLine[1].Substring(pFrom, pTo - pFrom);
+                    if (stringBuilder.Length == i + 1) i--;
+                    stringBuilder = stringBuilder.Remove(0, i + 1);
 
-            return (attributeName, attributeValue);
+                    int shift = 0;
+                    object value = GetValue(stringBuilder.ToString(), ref shift);
+
+                    if (stringBuilder.Length >= shift + 2)
+                        stringBuilder = stringBuilder.Remove(0, shift + 2);
+
+                    i = 0;
+
+                    nameValues.Add(name, value);
+                }
+            }
+
+            return nameValues;
         }
+
+        /// <summary>
+        /// Извлекает имя переменной из текста
+        /// </summary>
+        /// <param name="serializedText">Текст в Json формате</param>
+        /// <param name="nameLength">Длина имени переменной</param>
+        /// <returns></returns>
+        private string GetName(string serializedText, int nameLength)
+        {
+            return serializedText.Substring(0, nameLength - 1).Trim(new char[] { ',', '"', '{' });
+        }
+
+        /// <summary>
+        /// Получение текстового значения переменой
+        /// </summary>
+        /// <param name="serializedText">Описние значения атрибута</param>
+        /// <param name="shiftValue">Количество символов значения</param>
+        /// <returns>
+        /// Возвращает строковое значение переменной,
+        /// Или Dictonary, если значение - объект класса
+        /// </returns>
+        private object GetValue(string serializedText, ref int shiftValue)
+        {
+            if (serializedText[0] != '{')
+            {
+                string serializedValue = string.Join("", serializedText.TakeWhile(ch => ch != ',')).Trim('"');
+                
+                shiftValue = serializedValue.Length;
+                
+                return serializedValue;
+            }
+            else
+            {
+                int endOfAddress = serializedText.IndexOf('}');
+
+                var serializedValue = serializedText.Substring(1, endOfAddress - 1);
+
+                shiftValue = serializedValue.Length;
+
+                return DeserializeJsonInDictionary(serializedValue);
+            }
+        }
+        #endregion
     }
 }

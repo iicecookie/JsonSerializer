@@ -12,7 +12,7 @@ namespace Navicon.JsonSerializer
     {
         static void Main(string[] args)
         {
-            Contact contact = new Contact(
+            Contact contact1 = new Contact(
                 firstName: "Maxim",
                 secondName: "Bukanov",
                 lastName: "...",
@@ -22,29 +22,49 @@ namespace Navicon.JsonSerializer
                     Sity = "Moscow",
                     AddressType = AddressType.Actual,
                     Country = "Russia",
-                    LifeLocation = ""
+                    LifeLocation = "213"
                 },
                 birth: new DateTime(1998, 11, 22),
                 itn: "123124141241",
                 phoneNumber: "+7(925)561-84-06"
             );
 
-            Console.WriteLine(contact);
+            Contact contact2 = new Contact(
+                firstName: "Maxim",
+                secondName: "Bukanov",
+                lastName: "...",
+                gender: Gender.Female,
+                address: new Address()
+                {
+                    Sity = "Moscow",
+                    AddressType = AddressType.Actual,
+                    Country = "Russia",
+                    LifeLocation = "..."
+                },
+                birth: new DateTime(1998, 11, 22),
+                itn: "123124141241",
+                phoneNumber: "+7(925)561-84-06"
+                );
 
-            var serializer = new ContactSerializer("firstTry");
+            List<Contact> contacts = new List<Contact>();
+            contacts.Add(contact1);
+            contacts.Add(contact2);
 
-            var serializedContact = serializer.Serialize(contact);
+            Console.WriteLine(contacts[0]);
+
+            var serializer = new ContactSerializer(new FileManager(), "firstTry");
+            
+            var serializedContact = serializer.Serialize(contacts[0]);
             Console.WriteLine(serializedContact);
+            Console.WriteLine("\n");
 
 
-            Console.WriteLine(JsonConvert.SerializeObject(contact));
-            //      Console.WriteLine("\n");
-            //
-            //      Contact deserializedContact = serializer.Deserialize(serializedContact);
-            //      Console.WriteLine(deserializedContact);
-            //      Console.WriteLine("\n");
-            //
-            //      Console.WriteLine(deserializedContact);
+            Contact deserializedContact = serializer.Deserialize(serializedContact);
+            Console.WriteLine(deserializedContact);
+            Console.WriteLine("\n");
+
+            // FileManager fileManager = new FileManager();
+            // fileManager.WriteInFile("jojo", "joker");
         }
 
         public static bool ValidateModel(object obj)
