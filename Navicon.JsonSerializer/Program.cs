@@ -3,7 +3,6 @@ using Navicon.JsonSerializer.Models.Enums;
 using Navicon.JsonSerializer.Serializer;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Navicon.JsonSerializer
 {
@@ -35,11 +34,11 @@ namespace Navicon.JsonSerializer
 
             ModelValidetor.ValidateModel(contact1);
 
-            var contactSerializer = new ContactSerializer(new FileManager(), new Serializer.JsonSerializer());
-
-            contactSerializer.Serialize(contact1);
-
-            Console.WriteLine(contactSerializer.Deserialize("Maxim_Bukanov"));
+          //  var contactSerializer = new ContactSerializer(new FileManager(), new Serializer.JsonSerializer());
+          //
+          //  contactSerializer.Serialize(contact1);
+          //
+          //  Console.WriteLine(contactSerializer.Deserialize("Maxim_Bukanov"));
         } 
     }
 }
