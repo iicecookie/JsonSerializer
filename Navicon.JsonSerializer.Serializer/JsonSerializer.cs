@@ -11,23 +11,8 @@ using System.Text;
 
 namespace Navicon.JsonSerializer.Serializer
 {
-    public class ContactSerializer
+    public class JsonSerializer
     {
-        private readonly FileManager _fileManager;
-
-        private string _filename;
-
-        private readonly PropertyInfo[] contactPropertyes;
-
-        public ContactSerializer(FileManager fileManager, string filename)
-        {
-            _fileManager = fileManager;
-
-            _filename = filename;
-
-            contactPropertyes = typeof(Contact).GetProperties();
-        }
-
         #region Serializing
         /// <summary>
         /// Преобразование списка объектов в JSON формат

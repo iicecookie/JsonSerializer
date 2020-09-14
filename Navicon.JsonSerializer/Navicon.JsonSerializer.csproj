@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Navicon.JsonSerializer.Models\Navicon.JsonSerializer.Models.csproj" />
-    <ProjectReference Include="..\Serializer\Navicon.JsonSerializer.Serializer.csproj" />
+    <ProjectReference Include="..\Navicon.JsonSerializer.Serializer\Navicon.JsonSerializer.Serializer.csproj" />
   </ItemGroup>
 
 </Project>

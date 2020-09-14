@@ -58,6 +58,12 @@ namespace Navicon.JsonSerializer.Serializer
             return isValid;
         }
 
+        /// <summary>
+        /// Считывает текст из указаного текстового файла
+        /// </summary>
+        /// <param name="fileName">имя файла</param>
+        /// <param name="path">путь к файлу</param>
+        /// <returns></returns>
         public string ReadFromFile(string fileName, string path = @"C:\Navicon\JsonSerializer")
         {
             if (IsValidPath(path) == false)
