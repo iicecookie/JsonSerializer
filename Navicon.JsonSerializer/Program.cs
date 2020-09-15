@@ -1,8 +1,8 @@
-﻿using Navicon.JsonSerializer.Models;
-using Navicon.JsonSerializer.Models.Enums;
+﻿using Navicon.JsonSerializer.Models.Enums;
 using Navicon.JsonSerializer.Serializer;
-using System;
+using Navicon.JsonSerializer.Models;
 using System.Collections.Generic;
+using System;
 
 namespace Navicon.JsonSerializer
 {
@@ -14,7 +14,7 @@ namespace Navicon.JsonSerializer
                 firstName: "Maxim",
                 secondName: "Bukanov",
                 lastName: "...",
-                gender: Gender.Female,
+                gender: Gender.Male,
                 address: new Address()
                 {
                     Sity = "Moscow",
