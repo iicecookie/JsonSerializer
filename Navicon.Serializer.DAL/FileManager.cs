@@ -1,9 +1,10 @@
-﻿using System;
+﻿using OfficeOpenXml;
+using System;
 using System.IO;
 
 namespace Navicon.Serializer.Serializer
 {
-    public class FileManager
+    public class FileManager 
     {
         /// <summary>
         /// Записывает текст в файл
@@ -86,6 +87,30 @@ namespace Navicon.Serializer.Serializer
 
                 return System.Text.Encoding.Default.GetString(array);
             }
+        }
+
+        public void SaveExcelFile(ExcelPackage excelPackage, string filePath = "", string fileName = "File")
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                filePath = Environment.CurrentDirectory;
+            }
+            if (IsValidPath(filePath) == false)
+            {
+                throw new ArgumentException();
+            }
+
+            using (FileStream fstream = new FileStream($"{filePath}\\{fileName}.txt", FileMode.Create))
+            {
+               // byte[] array = System.Text.Encoding.Default.GetBytes(Text);
+               //
+               // fstream.Write(array, 0, array.Length);
+
+                excelPackage.SaveAs(fstream);
+            }
+
+          //  FileInfo fi = new FileInfo(string.Concat(filePath, $"{fileName}.xlsx"));
+          //  excelPackage.SaveAs(fi);
         }
     }
 }

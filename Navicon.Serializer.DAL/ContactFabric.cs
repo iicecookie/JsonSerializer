@@ -2,48 +2,48 @@
 using Navicon.Serializer.Models.Enums;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text;
 
-namespace Navicon.XSLXSerializer
+namespace Navicon.Serializer.DAL
 {
-    class Program
+    public class ContactFabric: IDataSorce
     {
-        static void Main(string[] args)
-        {
-            List<string> firstNames = new List<string> {
-                                            "Liam", "Olivia", "Noah", 
-                                            "Emma", "Oliver" , "Ava", 
-                                            "William", "Sophia" , "Elijah", 
+        private List<string> firstNames = new List<string> {
+                                            "Liam", "Olivia", "Noah",
+                                            "Emma", "Oliver" , "Ava",
+                                            "William", "Sophia" , "Elijah",
                                             "Isabella", "James", "Charlotte",
                                             "Benjamin", "Amelia", "Lucas",
-                                            "Mia", "Mason", "Harper", 
-                                            "Ethan" , "Evelyn" 
-            };
-            List<string> secondNames = new List<string> {
+                                            "Mia", "Mason", "Harper",
+                                            "Ethan" , "Evelyn"
+        };
+        private List<string> secondNames = new List<string> {
                                             "Smith", "Johnson", "Williams",
-                                            "Jones", "Brown", "Davis", 
+                                            "Jones", "Brown", "Davis",
                                             "Miller","Wilson",
-            };
-            List<string> lastNames = new List<string>
+        };
+        private List<string> lastNames = new List<string>
             {
                                             "Smith", "Johnson", "Williams",
                                             "Brown", "Jones", "Garcia",
                                             "Miller", "Davis",
-            };
-            List<string> countries = new List<string>
+        };
+        private List<string> countries = new List<string>
             {
                                             "Norway", "Switzerland", "Australia",
                                             "Ireland", "Germany", "Iceland",
                                             "Sweden", "Hong Kong",
-            };
-            List<string> sityes = new List<string>
+        };
+        private List<string> sityes = new List<string>
             {
                                             "Helsinki", "Tokyo", "Vancouver",
                                             "Melbourne", "Munich", "Copenhagen",
                                             "Zurich", "Vienna",
-            };
+        };
 
-            List<Contact> contacts = new List<Contact>(10);
+        public List<Contact> GetContacts(int count = 10)
+        {
+            List<Contact> contacts = new List<Contact>(count);
 
             for (int i = 0; i < contacts.Capacity; i++)
             {
@@ -51,7 +51,7 @@ namespace Navicon.XSLXSerializer
 
                 Random random = new Random();
 
-                contact.FirstName = firstNames[random.Next(0,20)];
+                contact.FirstName = firstNames[random.Next(0, 20)];
                 contact.SecondName = secondNames[random.Next(0, 7)];
                 contact.LastName = lastNames[random.Next(0, 7)];
                 contact.ITN = random.Next(0, 123121212).ToString();
@@ -73,17 +73,7 @@ namespace Navicon.XSLXSerializer
 
                 contacts.Add(contact);
             }
-
-            foreach(var contact in contacts)
-            {
-                Console.WriteLine(contact);
-            }
-
-            Console.WriteLine("Enter a Filename");
-
-            var filename = Console.ReadLine();
-
-            // ExcelSerializer.Serialize(contacts, filename);
+            return contacts;
         }
     }
 }
