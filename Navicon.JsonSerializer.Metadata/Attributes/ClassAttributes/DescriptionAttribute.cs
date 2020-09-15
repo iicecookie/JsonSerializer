@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Navicon.JsonSerializer.Metadata.Attributes
+namespace Navicon.Serializer.Metadata.Attributes
 {
 
     [AttributeUsage(AttributeTargets.Class)]

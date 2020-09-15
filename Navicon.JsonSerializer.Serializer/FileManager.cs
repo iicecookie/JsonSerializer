@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Navicon.JsonSerializer.Serializer
+namespace Navicon.Serializer.Serializer
 {
     public class FileManager
     {

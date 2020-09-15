@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace Navicon.JsonSerializer.Metadata.Attributes
+namespace Navicon.Serializer.Metadata.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class PhoneRegexAttribute : Attribute, IValidation

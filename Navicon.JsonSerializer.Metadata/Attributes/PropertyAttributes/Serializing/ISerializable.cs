@@ -1,4 +1,4 @@
-﻿namespace Navicon.JsonSerializer.Metadata.Attributes.Serializing
+﻿namespace Navicon.Serializer.Metadata.Attributes.Serializing
 {
     public interface ISerializable
     {

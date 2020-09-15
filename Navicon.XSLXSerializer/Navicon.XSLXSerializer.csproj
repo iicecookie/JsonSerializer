@@ -6,8 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Navicon.JsonSerializer.Models\Navicon.JsonSerializer.Models.csproj" />
-    <ProjectReference Include="..\Navicon.XSLXSerializer.Serializer\Navicon.XSLXSerializer.Serializer.csproj" />
+    <ProjectReference Include="..\Navicon.JsonSerializer.Models\Navicon.Serializer.Models.csproj" />
   </ItemGroup>
 
 </Project>

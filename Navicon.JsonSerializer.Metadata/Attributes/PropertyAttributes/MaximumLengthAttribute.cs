@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Navicon.JsonSerializer.Metadata.Attributes
+namespace Navicon.Serializer.Metadata.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class MaximumLengthAttribute : Attribute, IValidation

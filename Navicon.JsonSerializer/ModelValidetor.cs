@@ -1,11 +1,11 @@
-﻿using Navicon.JsonSerializer.Metadata.Attributes;
+﻿using Navicon.Serializer.Metadata.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Navicon.JsonSerializer
+namespace Navicon.Serializer
 {
     public static class ModelValidetor
     {

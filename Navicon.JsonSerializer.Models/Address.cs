@@ -1,9 +1,9 @@
-﻿using Navicon.JsonSerializer.Metadata.Attributes;
-using Navicon.JsonSerializer.Models.Enums;
+﻿using Navicon.Serializer.Metadata.Attributes;
+using Navicon.Serializer.Models.Enums;
 using System;
-using SerializableAttribute = Navicon.JsonSerializer.Metadata.Attributes.SerializableAttribute;
+using SerializableAttribute = Navicon.Serializer.Metadata.Attributes.SerializableAttribute;
 
-namespace Navicon.JsonSerializer.Models
+namespace Navicon.Serializer.Models
 {
     [Description("Место жительство человека")]
     public sealed class Address : ICloneable

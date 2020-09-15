@@ -1,6 +1,6 @@
-﻿using Navicon.JsonSerializer.Metadata.Attributes.Serializing;
-using Navicon.JsonSerializer.Models;
-using Navicon.JsonSerializer.Models.Enums;
+﻿using Navicon.Serializer.Metadata.Attributes.Serializing;
+using Navicon.Serializer.Models;
+using Navicon.Serializer.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Navicon.JsonSerializer.Serializer
+namespace Navicon.Serializer.Serializer
 {
     public class JsonSerializer
     {

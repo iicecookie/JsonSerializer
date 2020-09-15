@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Navicon.JsonSerializer.Metadata.Attributes
+namespace Navicon.Serializer.Metadata.Attributes
 {
     public interface IValidation
     {

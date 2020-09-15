@@ -1,5 +1,5 @@
-﻿using Navicon.JsonSerializer.Models;
-using Navicon.JsonSerializer.Models.Enums;
+﻿using Navicon.Serializer.Models;
+using Navicon.Serializer.Models.Enums;
 using Navicon.XSLXSerializer.Serializer;
 using System;
 using System.Collections.Generic;

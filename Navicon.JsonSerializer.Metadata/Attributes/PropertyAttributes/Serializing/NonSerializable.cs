@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using Navicon.JsonSerializer.Metadata.Attributes.Serializing;
-using ISerializable = Navicon.JsonSerializer.Metadata.Attributes.Serializing.ISerializable;
+using Navicon.Serializer.Metadata.Attributes.Serializing;
+using ISerializable = Navicon.Serializer.Metadata.Attributes.Serializing.ISerializable;
 
-namespace Navicon.JsonSerializer.Metadata.Attributes
+namespace Navicon.Serializer.Metadata.Attributes
 {
 
     [AttributeUsage(AttributeTargets.Property)]

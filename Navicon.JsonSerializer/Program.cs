@@ -1,10 +1,10 @@
-﻿using Navicon.JsonSerializer.Models.Enums;
-using Navicon.JsonSerializer.Serializer;
-using Navicon.JsonSerializer.Models;
+﻿using Navicon.Serializer.Models.Enums;
+using Navicon.Serializer.Serializer;
+using Navicon.Serializer.Models;
 using System.Collections.Generic;
 using System;
 
-namespace Navicon.JsonSerializer
+namespace Navicon.Serializer
 {
     class Program
     {

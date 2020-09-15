@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Navicon.JsonSerializer.Models.Enums
+namespace Navicon.Serializer.Models.Enums
 {
     public enum AddressType
     {

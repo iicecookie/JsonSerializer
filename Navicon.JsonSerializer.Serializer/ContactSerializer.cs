@@ -1,9 +1,9 @@
-﻿using Navicon.JsonSerializer.Models;
+﻿using Navicon.Serializer.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Navicon.JsonSerializer.Serializer
+namespace Navicon.Serializer.Serializer
 {
     public class ContactSerializer
     {
