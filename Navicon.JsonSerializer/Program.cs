@@ -42,9 +42,9 @@ namespace Navicon.Serializer
             //
             //  Console.WriteLine(contactSerializer.Deserialize("Maxim_Bukanov"));'
 
-            Director director = new Director(new ContactFabric(), new ModelBuilder());
-            director.DoEverything();
-            new ExcelSerializer().CreateExcelFile();
+            Director director = new Director(new ContactFabric(), new ModelBuilder(), new ExcelSerializer(), new FileManager());
+
+            director.CreateAndFillExcelFile();
         } 
     }
 }

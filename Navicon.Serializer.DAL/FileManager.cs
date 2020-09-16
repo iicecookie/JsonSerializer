@@ -89,7 +89,7 @@ namespace Navicon.Serializer.Serializer
             }
         }
 
-        public void SaveExcelFile(ExcelPackage excelPackage, string filePath = "", string fileName = "File")
+        public void SaveExcelFile(ExcelPackage excelPackage, string fileName = "File", string filePath = "")
         {
             if (string.IsNullOrEmpty(filePath))
             {
@@ -100,17 +100,17 @@ namespace Navicon.Serializer.Serializer
                 throw new ArgumentException();
             }
 
-            using (FileStream fstream = new FileStream($"{filePath}\\{fileName}.txt", FileMode.Create))
+            using (FileStream fstream = new FileStream($"{filePath}\\{fileName}.xlsx", FileMode.Create))
             {
-               // byte[] array = System.Text.Encoding.Default.GetBytes(Text);
-               //
-               // fstream.Write(array, 0, array.Length);
+                // byte[] array = System.Text.Encoding.Default.GetBytes(Text);
+                //
+                // fstream.Write(array, 0, array.Length);
 
                 excelPackage.SaveAs(fstream);
             }
 
-          //  FileInfo fi = new FileInfo(string.Concat(filePath, $"{fileName}.xlsx"));
-          //  excelPackage.SaveAs(fi);
+            //  FileInfo fi = new FileInfo(string.Concat(filePath, $"{fileName}.xlsx"));
+            //     excelPackage.SaveAs(fi);
         }
     }
 }

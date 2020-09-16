@@ -13,8 +13,8 @@ namespace Navicon.Serializer.DAL.ModelBuilder
         {
             List<ExcelContact> excelContacts = ConvertContactToExcelContact(contacts);
 
-            OrderExcelContactsByName(excelContacts);
-            SetId(excelContacts);
+            excelContacts = OrderExcelContactsByName(excelContacts);
+            excelContacts = SetId(excelContacts);
 
             return excelContacts;
         }
