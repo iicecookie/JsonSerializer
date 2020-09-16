@@ -1,22 +1,20 @@
-﻿using Navicon.Serializer.Models;
-using Navicon.Serializer.DAL;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Navicon.Serializer.DAL;
+using Navicon.Serializer.Models;
+using Navicon.Serializer.Serializing.JSON;
 
-namespace Navicon.Serializer.Serializer
+namespace Navicon.Serializer
 {
-    public class ContactSerializer
+    public class JSONDirector
     {
         private readonly FileManager _fileManager;
 
         private readonly JsonSerializer _jsonSerializer;
 
-        public ContactSerializer()
+        public JSONDirector()
         {
         }
 
-        public ContactSerializer(FileManager fileManager, JsonSerializer jsonSerializer) : base()
+        public JSONDirector(FileManager fileManager, JsonSerializer jsonSerializer) : base()
         {
             _fileManager = fileManager;
 

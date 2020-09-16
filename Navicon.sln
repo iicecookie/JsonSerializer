@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navicon.Serializer.Metadata
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JsonSerializer", "JsonSerializer", "{488998A9-AB31-475F-9B2B-96DE6AFE7564}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navicon.Serializer.Serializer", "Navicon.JsonSerializer.Serializer\Navicon.Serializer.Serializer.csproj", "{F731DF27-B1A2-4625-ACC6-D082FE599692}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navicon.Serializer.Serializing", "Navicon.JsonSerializer.Serializer\Navicon.Serializer.Serializing.csproj", "{F731DF27-B1A2-4625-ACC6-D082FE599692}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navicon.Serializer.DAL", "Navicon.Serializer.DAL\Navicon.Serializer.DAL.csproj", "{7ECCC9D4-0F22-4B9D-9DEF-EF238BF3D000}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Navicon.Serializer.DAL", "Navicon.Serializer.DAL\Navicon.Serializer.DAL.csproj", "{7ECCC9D4-0F22-4B9D-9DEF-EF238BF3D000}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

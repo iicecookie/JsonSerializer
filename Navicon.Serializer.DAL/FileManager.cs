@@ -2,9 +2,9 @@
 using System;
 using System.IO;
 
-namespace Navicon.Serializer.Serializer
+namespace Navicon.Serializer.DAL
 {
-    public class FileManager 
+    public class FileManager
     {
         /// <summary>
         /// Записывает текст в файл
@@ -21,7 +21,7 @@ namespace Navicon.Serializer.Serializer
 
             DirectoryInfo dirInfo = new DirectoryInfo(path);
 
-            if (dirInfo.Exists==false)
+            if (dirInfo.Exists == false)
             {
                 dirInfo.Create();
             }
@@ -89,6 +89,12 @@ namespace Navicon.Serializer.Serializer
             }
         }
 
+        /// <summary>
+        /// Сохраняет Excel файл в указаное расположение
+        /// </summary>
+        /// <param name="excelPackage">Excel документ</param>
+        /// <param name="fileName">Имя сохраняемого файла</param>
+        /// <param name="filePath">Путь к файлу</param>
         public void SaveExcelFile(ExcelPackage excelPackage, string fileName = "File", string filePath = "")
         {
             if (string.IsNullOrEmpty(filePath))
@@ -102,15 +108,9 @@ namespace Navicon.Serializer.Serializer
 
             using (FileStream fstream = new FileStream($"{filePath}\\{fileName}.xlsx", FileMode.Create))
             {
-                // byte[] array = System.Text.Encoding.Default.GetBytes(Text);
-                //
-                // fstream.Write(array, 0, array.Length);
-
                 excelPackage.SaveAs(fstream);
+                Console.WriteLine($"{fileName}.xlsx сохранен в {filePath}");
             }
-
-            //  FileInfo fi = new FileInfo(string.Concat(filePath, $"{fileName}.xlsx"));
-            //     excelPackage.SaveAs(fi);
         }
     }
 }

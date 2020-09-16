@@ -3,12 +3,17 @@ using Navicon.Serializer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Navicon.Serializer.DAL.ModelBuilder
 {
     public class ModelBuilder
     {
+        /// <summary>
+        /// Выполняет преобразование списка Contact в пригодный для записи в Excel формат
+        /// сортирует и устанавливает идентификаторы
+        /// </summary>
+        /// <param name="contacts">Список контактов</param>
+        /// <returns>Готовый к записи в Excel список контактов</returns>
         public List<ExcelContact> PrepeareContactForExcel(List<Contact> contacts)
         {
             List<ExcelContact> excelContacts = ConvertContactToExcelContact(contacts);
@@ -19,6 +24,11 @@ namespace Navicon.Serializer.DAL.ModelBuilder
             return excelContacts;
         }
 
+        /// <summary>
+        /// Преобразует тип Contact в пригодный для записи в Excel файл ExcelContact
+        /// </summary>
+        /// <param name="contacts">список контактов</param>
+        /// <returns>список ExcelContact</returns>
         public List<ExcelContact> ConvertContactToExcelContact(List<Contact>contacts)
         {
             var excelContacts = new List<ExcelContact>();
@@ -44,11 +54,21 @@ namespace Navicon.Serializer.DAL.ModelBuilder
             return excelContacts;
         }
 
+        /// <summary>
+        /// Выполняет сортировку списка контактов по фамилии, а затем по имяни
+        /// </summary>
+        /// <param name="contacts">Список контактов</param>
+        /// <returns>Отсортированый список ExcelContact</returns>
         public List<ExcelContact> OrderExcelContactsByName(List<ExcelContact> contacts)
         {
             return contacts.OrderBy(sc => sc.SecondName).ThenBy(fi => fi.FirstName).ToList();
         }
 
+        /// <summary>
+        /// Последовательно устанавливает идентификаторы для каждого объекта в списке
+        /// </summary>
+        /// <param name="contacts">Список контактов</param>
+        /// <returns>Список ExcelContact с установлеными идентификаторами</returns>
         public List<ExcelContact> SetId(List<ExcelContact> contacts)
         {
             int i = 1;
@@ -59,6 +79,11 @@ namespace Navicon.Serializer.DAL.ModelBuilder
             return contacts;
         }
 
+        /// <summary>
+        /// Приводит дату к строковому формату dd/M/yyyy
+        /// </summary>
+        /// <param name="data">Форматируемая дата</param>
+        /// <returns>строка формата dd/M/yyyy</returns>
         private string GetDateFormated(DateTime data)
         {
             return data.ToString("dd/M/yyyy");

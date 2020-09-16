@@ -2,14 +2,14 @@
 using Navicon.Serializer.DAL.ModelBuilder;
 using Navicon.Serializer.DAL.Models;
 using Navicon.Serializer.Models;
-using Navicon.Serializer.Serializer;
-using Navicon.Serializer.Serializer.EXCEL;
+using Navicon.Serializer.Serializing.EXCEL;
+using Navicon.Serializer.DAL.Interfaces;
 using System.Collections.Generic;
 using OfficeOpenXml;
 
 namespace Navicon.Serializer
 {
-    public sealed class Director
+    public sealed class ExcelDirector
     {
         private IDataSorce _dataSorce;
 
@@ -19,7 +19,7 @@ namespace Navicon.Serializer
 
         private FileManager _fileManager;
 
-        public Director(IDataSorce dataSorce, ModelBuilder modelBuilder, ExcelSerializer excelSerializer, FileManager fileManager)
+        public ExcelDirector(IDataSorce dataSorce, ModelBuilder modelBuilder, ExcelSerializer excelSerializer, FileManager fileManager)
         {
             _dataSorce = dataSorce;
             _modelBuilder = modelBuilder;
@@ -27,7 +27,7 @@ namespace Navicon.Serializer
             _fileManager = fileManager;
         }
 
-        public void CreateAndFillExcelFile(string fileName = "", string filePath = "")
+        public void CreateAndFillExcelFile(string fileName = "File", string filePath = "")
         {
             List<Contact> contacts = _dataSorce.GetContacts(10);
 
@@ -37,6 +37,7 @@ namespace Navicon.Serializer
             _excelSerializer.AddExcelContactToExcel(excelContacts, excelFile);
 
             _fileManager.SaveExcelFile(excelFile, fileName, filePath);
+
         }
     }
 }

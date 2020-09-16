@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Navicon.Serializer.DAL
+namespace Navicon.Serializer.DAL.Interfaces
 {
     public interface IDataSorce
     {

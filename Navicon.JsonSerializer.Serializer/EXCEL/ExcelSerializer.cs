@@ -5,10 +5,14 @@ using System.Linq;
 using System;
 using OfficeOpenXml;
 
-namespace Navicon.Serializer.Serializer.EXCEL
+namespace Navicon.Serializer.Serializing.EXCEL
 {
     public class ExcelSerializer
     {
+        /// <summary>
+        /// Создает Excel файл и одной страницей
+        /// </summary>
+        /// <returns></returns>
         public ExcelPackage CreateExcelFile()
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -19,11 +23,16 @@ namespace Navicon.Serializer.Serializer.EXCEL
             excelPackage.Workbook.Properties.Title = "List of the Contacts";
             excelPackage.Workbook.Properties.Created = DateTime.Now;
 
-            ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Contacts");
+            excelPackage.Workbook.Worksheets.Add("Contacts");
 
             return excelPackage;
         }
 
+        /// <summary>
+        /// Добавляет все контакты построчно в указаный Excel документ на первую страницу
+        /// </summary>
+        /// <param name="excelContacts">Список контактов, подготовленных к записи</param>
+        /// <param name="excelPackage">Excel файл</param>
         public void AddExcelContactToExcel(List<ExcelContact> excelContacts, ExcelPackage excelPackage)
         {
             AddColumnTitles(excelPackage, excelContacts.First());
@@ -42,8 +51,12 @@ namespace Navicon.Serializer.Serializer.EXCEL
             }
         }
 
- 
-
+        /// <summary>
+        /// Добавляет в первую строку первой Excel страницы имена полей ExcelContact
+        /// </summary>
+        /// <param name="excelPackage">Excel Файл</param>
+        /// <param name="contact"></param>
+        /// <returns></returns>
         public ExcelPackage AddColumnTitles(ExcelPackage excelPackage, ExcelContact contact)
         {
             PropertyInfo[] propertyesInfo = contact.GetType().GetProperties();

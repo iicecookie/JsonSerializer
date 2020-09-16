@@ -1,10 +1,10 @@
-﻿using Navicon.Serializer.Models;
+﻿using Navicon.Serializer.DAL.Interfaces;
+using Navicon.Serializer.Models;
 using Navicon.Serializer.Models.Enums;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Navicon.Serializer.DAL
+namespace Navicon.Serializer.DAL.DataSorce
 {
     public class ContactFabric: IDataSorce
     {
@@ -41,6 +41,11 @@ namespace Navicon.Serializer.DAL
                                             "Zurich", "Vienna",
         };
 
+        /// <summary>
+        /// Создает список случайно сгенерированых контактов
+        /// </summary>
+        /// <param name="count">количество нужных контактов</param>
+        /// <returns>Список контактов</returns>
         public List<Contact> GetContacts(int count = 10)
         {
             List<Contact> contacts = new List<Contact>(count);

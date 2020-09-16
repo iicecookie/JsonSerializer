@@ -1,11 +1,8 @@
-﻿using Navicon.Serializer.Models.Enums;
-using Navicon.Serializer.Serializer;
-using Navicon.Serializer.Models;
-using System.Collections.Generic;
-using System;
+﻿using System;
 using Navicon.Serializer.DAL;
 using Navicon.Serializer.DAL.ModelBuilder;
-using Navicon.Serializer.Serializer.EXCEL;
+using Navicon.Serializer.Serializing.EXCEL;
+using Navicon.Serializer.DAL.DataSorce;
 
 namespace Navicon.Serializer
 {
@@ -42,7 +39,7 @@ namespace Navicon.Serializer
             //
             //  Console.WriteLine(contactSerializer.Deserialize("Maxim_Bukanov"));'
 
-            Director director = new Director(new ContactFabric(), new ModelBuilder(), new ExcelSerializer(), new FileManager());
+            ExcelDirector director = new ExcelDirector(new ContactFabric(), new ModelBuilder(), new ExcelSerializer(), new FileManager());
 
             director.CreateAndFillExcelFile();
         } 
