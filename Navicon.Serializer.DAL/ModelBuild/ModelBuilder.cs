@@ -42,7 +42,7 @@ namespace Navicon.Serializer.DAL.ModelBuilder
                 excelContact.LastName   = contact.LastName;
                 excelContact.ShortName  = GetShortName(contact.FirstName, contact.SecondName, contact.LastName);
                 excelContact.ITN = contact.ITN;
-                excelContact.PhoneNumber = contact.PhoneNumber;
+                excelContact.PhoneNumber = GetPhoneNumberInMask(contact.PhoneNumber);
                 excelContact.DateOfBirth = GetDateFormated(contact.DateOfBirth);
                 excelContact.Country = contact.Address.Country;
                 excelContact.Sity    = contact.Address.Sity;
@@ -91,6 +91,25 @@ namespace Navicon.Serializer.DAL.ModelBuilder
         private string GetShortName(string firstName, string secondName, string lastName)
         {
             return $"{firstName} {secondName[0]}.{lastName[0]}.";
+        }
+        private string GetPhoneNumberInMask(string phoneNumber)
+        {
+            List<int> numbers = new List<int>();
+
+            foreach(var num in phoneNumber)
+            {
+                if (char.IsNumber(num))
+                {
+                    numbers.Add(int.Parse(num.ToString()));
+                }
+            }
+
+            return string.Format("+{0}({1}){2}-{3}-{4}",
+                                        numbers[0],
+                                        string.Join("", numbers.Skip(1).Take(3)),
+                                        string.Join("", numbers.Skip(4).Take(3)),
+                                        string.Join("", numbers.Skip(6).Take(2)),
+                                        string.Join("", numbers.Skip(9).Take(2)));
         }
     }
 }

@@ -46,7 +46,7 @@ namespace Navicon.Serializer.DAL.DataSorce
         /// </summary>
         /// <param name="count">количество нужных контактов</param>
         /// <returns>Список контактов</returns>
-        public List<Contact> GetContacts(int count = 10)
+        public IEnumerable<Contact> GetContacts(int count = 10)
         {
             List<Contact> contacts = new List<Contact>(count);
 

@@ -12,7 +12,7 @@ namespace Navicon.Serializer.DAL
         /// <param name="serializedText">Текст для записи</param>
         /// <param name="fileName">Имя файла</param>
         /// <param name="path">Путь к файлу</param>
-        public void WriteInFile(string Text, string fileName, string path = @"C:\Navicon\JsonSerializer")
+        public void WriteInFile(string Text, string fileName, string path = @"C:\Navicon\JsonSerializer", string fileFormat = "txt")
         {
             if (IsValidPath(path) == false)
             {
@@ -26,7 +26,7 @@ namespace Navicon.Serializer.DAL
                 dirInfo.Create();
             }
 
-            using (FileStream fstream = new FileStream($"{path}\\{fileName}.txt", FileMode.Create))
+            using (FileStream fstream = new FileStream($"{path}\\{fileName}.{fileFormat}", FileMode.Create))
             {
                 byte[] array = System.Text.Encoding.Default.GetBytes(Text);
 
@@ -35,28 +35,29 @@ namespace Navicon.Serializer.DAL
         }
 
         /// <summary>
-        /// Проверяет путь к файлу на корректность использования
+        /// Записывает последовательность байт в файл
         /// </summary>
-        /// <param name="path">Путь к файлу в файловой системе Windows</param>
-        /// <returns></returns>
-        private bool IsValidPath(string path)
+        /// <param name="Text">Текст в байтовом представлении unicode</param>
+        /// <param name="fileName">Имя файла</param>
+        /// <param name="path">Путь к файлу</param>
+        public void WriteInFile(byte[] Text, string fileName, string path = @"C:\Navicon\JsonSerializer", string fileFormat = "txt")
         {
-            bool isValid = true;
-
-            try
+            if (IsValidPath(path) == false)
             {
-                string fullPath = Path.GetFullPath(path);
-
-                string root = Path.GetPathRoot(path);
-
-                isValid = string.IsNullOrEmpty(root.Trim(new char[] { '\\', '/' })) == false;
-            }
-            catch (Exception ex)
-            {
-                isValid = false;
+                throw new ArgumentException("Путь к файлу не корректен");
             }
 
-            return isValid;
+            DirectoryInfo dirInfo = new DirectoryInfo(path);
+
+            if (dirInfo.Exists == false)
+            {
+                dirInfo.Create();
+            }
+
+            using (FileStream fstream = new FileStream($"{path}\\{fileName}.{fileFormat}", FileMode.Create))
+            {
+                fstream.Write(Text, 0, Text.Length);
+            }
         }
 
         /// <summary>
@@ -90,27 +91,28 @@ namespace Navicon.Serializer.DAL
         }
 
         /// <summary>
-        /// Сохраняет Excel файл в указаное расположение
+        /// Проверяет путь к файлу на корректность использования
         /// </summary>
-        /// <param name="excelPackage">Excel документ</param>
-        /// <param name="fileName">Имя сохраняемого файла</param>
-        /// <param name="filePath">Путь к файлу</param>
-        public void SaveExcelFile(ExcelPackage excelPackage, string fileName = "File", string filePath = "")
+        /// <param name="path">Путь к файлу в файловой системе Windows</param>
+        /// <returns></returns>
+        private bool IsValidPath(string path)
         {
-            if (string.IsNullOrEmpty(filePath))
+            bool isValid = true;
+
+            try
             {
-                filePath = Environment.CurrentDirectory;
+                string fullPath = Path.GetFullPath(path);
+
+                string root = Path.GetPathRoot(path);
+
+                isValid = string.IsNullOrEmpty(root.Trim(new char[] { '\\', '/' })) == false;
             }
-            if (IsValidPath(filePath) == false)
+            catch (Exception ex)
             {
-                throw new ArgumentException();
+                isValid = false;
             }
 
-            using (FileStream fstream = new FileStream($"{filePath}\\{fileName}.xlsx", FileMode.Create))
-            {
-                excelPackage.SaveAs(fstream);
-                Console.WriteLine($"{fileName}.xlsx сохранен в {filePath}");
-            }
+            return isValid;
         }
     }
 }

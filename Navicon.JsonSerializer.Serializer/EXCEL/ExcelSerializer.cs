@@ -10,10 +10,37 @@ namespace Navicon.Serializer.Serializing.EXCEL
     public class ExcelSerializer
     {
         /// <summary>
+        /// Добавляет все контакты построчно в указаный Excel документ на первую страницу
+        /// </summary>
+        /// <param name="excelContacts">Список контактов, подготовленных к записи</param>
+        /// <param name="excelPackage">Excel файл</param>
+        public byte[] GetContactsAsExcel(List<ExcelContact> excelContacts)
+        {
+            ExcelPackage excelPackage = CreateExcelFile();
+
+            AddColumnTitles(excelPackage, excelContacts.First());
+
+            PropertyInfo[] propertyesInfo = excelContacts.First().GetType().GetProperties();
+
+            const int ROW_AFTER_TITLE = 2;
+
+            for (int row= 0; row < excelContacts.Count; row++)
+            {
+                for (int column= 0; column < propertyesInfo.Length; column++)
+                {
+                    excelPackage.Workbook.Worksheets[0].Cells[ROW_AFTER_TITLE + row, column + 1].Value = 
+                                                                        propertyesInfo[column].GetValue(excelContacts[row]);
+                }
+            }
+
+            return excelPackage.GetAsByteArray();
+        }
+
+        /// <summary>
         /// Создает Excel файл и одной страницей
         /// </summary>
         /// <returns></returns>
-        public ExcelPackage CreateExcelFile()
+        private ExcelPackage CreateExcelFile()
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
@@ -29,35 +56,12 @@ namespace Navicon.Serializer.Serializing.EXCEL
         }
 
         /// <summary>
-        /// Добавляет все контакты построчно в указаный Excel документ на первую страницу
-        /// </summary>
-        /// <param name="excelContacts">Список контактов, подготовленных к записи</param>
-        /// <param name="excelPackage">Excel файл</param>
-        public void AddExcelContactToExcel(List<ExcelContact> excelContacts, ExcelPackage excelPackage)
-        {
-            AddColumnTitles(excelPackage, excelContacts.First());
-
-            PropertyInfo[] propertyesInfo = excelContacts.First().GetType().GetProperties();
-
-            const int ROW_AFTER_TITLE = 2;
-
-            for (int row= 0; row < excelContacts.Count; row++)
-            {
-                for (int column= 0; column < propertyesInfo.Length; column++)
-                {
-                    excelPackage.Workbook.Worksheets[0].Cells[ROW_AFTER_TITLE + row, column + 1].Value = 
-                                                                        propertyesInfo[column].GetValue(excelContacts[row]);
-                }
-            }
-        }
-
-        /// <summary>
         /// Добавляет в первую строку первой Excel страницы имена полей ExcelContact
         /// </summary>
         /// <param name="excelPackage">Excel Файл</param>
         /// <param name="contact"></param>
         /// <returns></returns>
-        public ExcelPackage AddColumnTitles(ExcelPackage excelPackage, ExcelContact contact)
+        private ExcelPackage AddColumnTitles(ExcelPackage excelPackage, ExcelContact contact)
         {
             PropertyInfo[] propertyesInfo = contact.GetType().GetProperties();
 
