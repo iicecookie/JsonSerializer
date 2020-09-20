@@ -8,7 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Navicon.Serializer.Serializing.JSON
+namespace Navicon.Serializer.Serializing
 {
     public class JsonSerializer
     {

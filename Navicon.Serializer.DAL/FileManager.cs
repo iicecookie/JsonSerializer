@@ -1,6 +1,8 @@
-﻿using OfficeOpenXml;
-using System;
+﻿using System;
+using System.Collections.Specialized;
+using System.Configuration;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Navicon.Serializer.DAL
 {
@@ -32,6 +34,7 @@ namespace Navicon.Serializer.DAL
 
                 fstream.Write(array, 0, array.Length);
             }
+
         }
 
         /// <summary>
@@ -49,7 +52,18 @@ namespace Navicon.Serializer.DAL
 
             DirectoryInfo dirInfo = new DirectoryInfo(path);
 
-            if (dirInfo.Exists == false)
+            var isOverridable = bool.Parse(ConfigurationManager.AppSettings.Get("OverrideFile"));
+
+
+            if (dirInfo.Exists == true)
+            {
+                if (isOverridable == false)
+                {
+                    //Logger.Log.Error("Ошибочка вышла!");
+                    throw new IOException("file already exist, check config file");
+                }
+            }
+            else
             {
                 dirInfo.Create();
             }

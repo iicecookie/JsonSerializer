@@ -1,6 +1,6 @@
 ﻿using Navicon.Serializer.DAL;
 using Navicon.Serializer.Models;
-using Navicon.Serializer.Serializing.JSON;
+using Navicon.Serializer.Serializing;
 
 namespace Navicon.Serializer
 {

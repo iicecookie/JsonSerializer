@@ -6,17 +6,18 @@ using System;
 using System.IO;
 using System.Text;
 using Navicon.Serializer.Models;
+using System.Threading.Tasks;
 
-namespace Navicon.Serializer.Serializing.CSV
+namespace Navicon.Serializer.Serializing
 {
-    public class CSVSerializer
+    public class CSVSerializer : ISerializer
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="contacts"></param>
         /// <returns></returns>
-        public byte[] GetContactsAsCsv(List<ExcelContact> contacts)
+        public async Task<byte[]> GetContactsPackaged(IEnumerable<ExcelContact> contacts)
         {
             MemoryStream memoryStream = new MemoryStream();
             StreamWriter streamWriter = new StreamWriter(memoryStream);
@@ -25,11 +26,11 @@ namespace Navicon.Serializer.Serializing.CSV
 
             PropertyInfo[] propertyesInfo = contacts.First().GetType().GetProperties();
           
-            for (int row= 0; row < contacts.Count; row++)
+            for (int row= 0; row < contacts.Count(); row++)
             {
                 for (int column= 0; column < propertyesInfo.Length; column++)
                 {
-                    streamWriter.Write(propertyesInfo[column].GetValue(contacts[row]));
+                    streamWriter.Write(propertyesInfo[column].GetValue(contacts.ElementAt(row)));
 
                     if (column + 1 != propertyesInfo.Length)
                         streamWriter.Write(";");
@@ -58,6 +59,10 @@ namespace Navicon.Serializer.Serializing.CSV
             streamWriter.Write('\n');
 
             return streamWriter;
+        }
+        public string GetFileFormate()
+        {
+            return "txt";
         }
     }
 }
