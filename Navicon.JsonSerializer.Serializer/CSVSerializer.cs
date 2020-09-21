@@ -17,22 +17,24 @@ namespace Navicon.Serializer.Serializing
         /// </summary>
         /// <param name="contacts"></param>
         /// <returns></returns>
-        public async Task<byte[]> GetContactsPackaged(IEnumerable<ExcelContact> contacts)
+        public async Task<byte[]> GetContactsPackaged(IEnumerable<ExportContact> contacts)
         {
             MemoryStream memoryStream = new MemoryStream();
             StreamWriter streamWriter = new StreamWriter(memoryStream);
 
             AddColumnTitles(streamWriter, contacts.First());
 
-            PropertyInfo[] propertyesInfo = contacts.First().GetType().GetProperties();
-          
-            for (int row= 0; row < contacts.Count(); row++)
-            {
-                for (int column= 0; column < propertyesInfo.Length; column++)
-                {
-                    streamWriter.Write(propertyesInfo[column].GetValue(contacts.ElementAt(row)));
+            PropertyInfo[] propertiesInfo = contacts.First().GetType().GetProperties();
 
-                    if (column + 1 != propertyesInfo.Length)
+            for (int row = 0; row < contacts.Count(); row++)
+            {
+                var contact = contacts.ElementAt(row);
+
+                for (int column = 0; column < propertiesInfo.Length; column++)
+                {
+                    streamWriter.Write(propertiesInfo[column].GetValue(contact));
+
+                    if (column + 1 != propertiesInfo.Length)
                         streamWriter.Write(";");
                 }
 
@@ -44,15 +46,15 @@ namespace Navicon.Serializer.Serializing
             return memoryStream.GetBuffer();
         }
 
-        private StreamWriter AddColumnTitles(StreamWriter streamWriter, ExcelContact contact)
+        private StreamWriter AddColumnTitles(StreamWriter streamWriter, ExportContact contact)
         {
-            PropertyInfo[] propertyesInfo = contact.GetType().GetProperties();
+            PropertyInfo[] propertiesInfo = contact.GetType().GetProperties();
 
-            for (int i = 0; i < propertyesInfo.Length; i++)
+            for (int i = 0; i < propertiesInfo.Length; i++)
             {
-                streamWriter.Write(propertyesInfo[i].Name);
-
-                if (i + 1 != propertyesInfo.Length)
+                streamWriter.Write(propertiesInfo[i].Name);
+            
+                if (i + 1 != propertiesInfo.Length)
                     streamWriter.Write(";");
             }
 
@@ -60,7 +62,7 @@ namespace Navicon.Serializer.Serializing
 
             return streamWriter;
         }
-        public string GetFileFormate()
+        public string GetFileFormat()
         {
             return "txt";
         }

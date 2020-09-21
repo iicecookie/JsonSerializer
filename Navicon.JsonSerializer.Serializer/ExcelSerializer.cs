@@ -15,24 +15,25 @@ namespace Navicon.Serializer.Serializing
         /// </summary>
         /// <param name="excelContacts">Список контактов, подготовленных к записи</param>
         /// <param name="excelPackage">Excel файл</param>
-        public async Task<byte[]> GetContactsPackaged(IEnumerable<ExcelContact> excelContacts)
+        public async Task<byte[]> GetContactsPackaged(IEnumerable<ExportContact> excelContacts)
         {
             ExcelPackage excelPackage = CreateExcelFile();
 
             AddColumnTitles(excelPackage, excelContacts.First());
 
-            PropertyInfo[] propertyesInfo = excelContacts.First().GetType().GetProperties();
+            PropertyInfo[] propertiesInfo = excelContacts.First().GetType().GetProperties();
 
             const int ROW_AFTER_TITLE = 2;
 
-            for (int row= 0; row < excelContacts.Count(); row++)
+            ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets[0];
+
+            for (int row = 0; row < excelContacts.Count(); row++)
             {
-                for (int column= 0; column < propertyesInfo.Length; column++)
+                var contact = excelContacts.ElementAt(row);
+
+                for (int column = 0; column < propertiesInfo.Length; column++)
                 {
-                    excelPackage.Workbook.Worksheets[0]
-                                         .Cells[ROW_AFTER_TITLE + row, column + 1]
-                                         .Value = propertyesInfo[column]
-                                                            .GetValue(excelContacts.ElementAt(row));
+                    worksheet.Cells[ROW_AFTER_TITLE + row, column + 1].Value = propertiesInfo[column].GetValue(contact);
                 }
             }
 
@@ -64,18 +65,20 @@ namespace Navicon.Serializer.Serializing
         /// <param name="excelPackage">Excel Файл</param>
         /// <param name="contact"></param>
         /// <returns></returns>
-        private ExcelPackage AddColumnTitles(ExcelPackage excelPackage, ExcelContact contact)
+        private ExcelPackage AddColumnTitles(ExcelPackage excelPackage, ExportContact contact)
         {
-            PropertyInfo[] propertyesInfo = contact.GetType().GetProperties();
+            PropertyInfo[] propertiesInfo = contact.GetType().GetProperties();
 
-            for (int i = 0; i < propertyesInfo.Length; i++)
+            ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets[0];
+
+            for (int i = 0; i < propertiesInfo.Length; i++)
             {
-                excelPackage.Workbook.Worksheets[0].Cells[1, i + 1].Value = propertyesInfo[i].Name;
+                worksheet.Cells[1, i + 1].Value = propertiesInfo[i].Name;
             }
             return excelPackage;
         }
 
-        public string GetFileFormate()
+        public string GetFileFormat()
         {
             return "xlsx";
         }

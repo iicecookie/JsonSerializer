@@ -34,23 +34,26 @@ namespace Navicon.Serializer.DAL
             }
 
             DirectoryInfo dirInfo = new DirectoryInfo(path);
-
-            var isOverridable = bool.Parse(ConfigurationManager.AppSettings.Get("OverrideFile"));
-
-            if (dirInfo.Exists == true)
-            {
-                if (isOverridable == false)
-                {
-                    Logger.Logger.Log.Error($"Файл {fileName} уже существует");
-                    throw new IOException("file already exist, check config file");
-                }
-            }
-            else
+            if (dirInfo.Exists == false)
             {
                 dirInfo.Create();
             }
 
-            using (FileStream fstream = new FileStream($"{path}\\{fileName}.{fileFormat}", FileMode.Create))
+            string filePath = $@"{path}\{fileName}.{fileFormat}";
+
+            if (File.Exists(filePath) == true)
+            {
+                bool isOverridable;
+                bool.TryParse(ConfigurationManager.AppSettings.Get("OverrideFile"), out isOverridable);
+
+                if (isOverridable == false)
+                {
+                    Logger.Logger.Log.Error($"Файл {fileName}.{fileFormat} уже существует в {path}");
+                    throw new IOException("file already exist, check config file");
+                }
+            }
+
+            using (FileStream fstream = new FileStream(filePath, FileMode.Create))
             {
                 fstream.Write(Text, 0, Text.Length);
             }

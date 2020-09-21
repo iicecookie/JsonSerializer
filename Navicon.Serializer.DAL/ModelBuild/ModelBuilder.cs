@@ -14,9 +14,9 @@ namespace Navicon.Serializer.DAL.ModelBuilder
         /// </summary>
         /// <param name="contacts">Список контактов</param>
         /// <returns>Готовый к записи в Excel список контактов</returns>
-        public IEnumerable<ExcelContact> PrepeareContactsForExport(IEnumerable<Contact> contacts)
+        public IEnumerable<ExportContact> PrepeareContactsForExport(IEnumerable<Contact> contacts)
         {
-            IEnumerable<ExcelContact> excelContacts = ConvertContactToExcelContact(contacts);
+            IEnumerable<ExportContact> excelContacts = ConvertContactToExcelContact(contacts);
 
             excelContacts = OrderExcelContactsByName(excelContacts);
             excelContacts = SetId(excelContacts);
@@ -31,13 +31,13 @@ namespace Navicon.Serializer.DAL.ModelBuilder
         /// </summary>
         /// <param name="contacts">список контактов</param>
         /// <returns>список ExcelContact</returns>
-        public IEnumerable<ExcelContact> ConvertContactToExcelContact(IEnumerable<Contact> contacts)
+        public IEnumerable<ExportContact> ConvertContactToExcelContact(IEnumerable<Contact> contacts)
         {
-            var excelContacts = new List<ExcelContact>();
+            var excelContacts = new List<ExportContact>();
 
             foreach(var contact in contacts)
             {
-                var excelContact = new ExcelContact();
+                var excelContact = new ExportContact();
 
                 excelContact.FirstName  = contact.FirstName;
                 excelContact.SecondName = contact.SecondName;
@@ -61,7 +61,7 @@ namespace Navicon.Serializer.DAL.ModelBuilder
         /// </summary>
         /// <param name="contacts">Список контактов</param>
         /// <returns>Отсортированый список ExcelContact</returns>
-        public IEnumerable<ExcelContact> OrderExcelContactsByName(IEnumerable<ExcelContact> contacts)
+        public IEnumerable<ExportContact> OrderExcelContactsByName(IEnumerable<ExportContact> contacts)
         {
             return contacts.OrderBy(sc => sc.SecondName).ThenBy(fi => fi.FirstName).ToList();
         }
@@ -71,7 +71,7 @@ namespace Navicon.Serializer.DAL.ModelBuilder
         /// </summary>
         /// <param name="contacts">Список контактов</param>
         /// <returns>Список ExcelContact с установлеными идентификаторами</returns>
-        public IEnumerable<ExcelContact> SetId(IEnumerable<ExcelContact> contacts)
+        public IEnumerable<ExportContact> SetId(IEnumerable<ExportContact> contacts)
         {
             int i = 1;
             foreach(var contact in contacts)

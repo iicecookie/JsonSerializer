@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Navicon.Serializer.DAL.Models
 {
-    public sealed class ExcelContact
+    public sealed class ExportContact
     {
         public int Id { get; set; }
         public string ShortName { get; set; }
@@ -18,9 +18,9 @@ namespace Navicon.Serializer.DAL.Models
         public string Sity { get; set; }
         public string Address { get; set; }
 
-        public ExcelContact() { }
+        public ExportContact() { }
 
-        public ExcelContact(int id, string shortName, string firstName, 
+        public ExportContact(int id, string shortName, string firstName, 
                               string secondName, string lastName, string dateOfBirth, 
                               string iTN, string phoneNumber, string country, 
                               string sity, string address)

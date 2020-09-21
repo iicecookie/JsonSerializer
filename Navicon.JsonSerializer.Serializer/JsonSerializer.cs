@@ -14,12 +14,12 @@ namespace Navicon.Serializer.Serializing
 {
     public class JsonSerializer :ISerializer
     {
-        public async Task<byte[]> GetContactsPackaged(IEnumerable<ExcelContact> Contacts)
+        public async Task<byte[]> GetContactsPackaged(IEnumerable<ExportContact> Contacts)
         {
             return Encoding.Unicode.GetBytes(Serialize(Contacts));
         }
 
-        public string GetFileFormate()
+        public string GetFileFormat()
         {
             return "json";
         }

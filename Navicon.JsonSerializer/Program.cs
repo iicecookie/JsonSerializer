@@ -2,7 +2,6 @@
 using Navicon.Serializer.DAL.ModelBuilder;
 using Navicon.Serializer.Serializing;
 using Navicon.Serializer.DAL.DataSorce;
-using Navicon.Serializer.Logger;
 
 namespace Navicon.Serializer
 {
@@ -12,19 +11,9 @@ namespace Navicon.Serializer
         {
             Logger.Logger.Log.Info("Начало работы приложения");
 
-
-            //  IKernel ninjectKernel = new StandardKernel();
-            //
-            //  ninjectKernel.Bind<IDataSorce>().To<ContactFabric>();
-            //
-            //  var repo = ninjectKernel.Get<IDataSorce>();
-            //
-            //  var collection = new ServiceCollection();
-            //  collection.AddScoped<IDemoService, DemoService>();
-
             Director director = new Director(new ContactFabric(), new ModelBuilder(), new CSVSerializer(), new FileManager());
 
-            director.CreateAndFillExcelFile();
+            director.CreateAndFillFile();
 
             Logger.Logger.Log.Info("Конец работы приложения");
         }

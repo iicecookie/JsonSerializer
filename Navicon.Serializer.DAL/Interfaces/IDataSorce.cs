@@ -7,7 +7,6 @@ namespace Navicon.Serializer.DAL.Interfaces
 {
     public interface IDataSorce
     {
-
         IEnumerable<Contact> GetContacts(int count);
     }
 }

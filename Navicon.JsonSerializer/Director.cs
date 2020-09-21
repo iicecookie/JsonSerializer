@@ -47,7 +47,7 @@ namespace Navicon.Serializer
             _fileManager  = fileManager;
         }
 
-        public async void CreateAndFillExcelFile(string fileName = "File", string filePath = @"C:\Navicon\JsonSerializer")
+        public async void CreateAndFillFile(string fileName = "File", string filePath = @"C:\Navicon\JsonSerializer")
         {
             Logger.Logger.Log.Info("Директор запрашивает список контактов");
 
@@ -55,7 +55,7 @@ namespace Navicon.Serializer
 
             Logger.Logger.Log.Info("Директор запрашивает подготовку списка к формату экспорта");
 
-            IEnumerable<ExcelContact> excelContacts = _modelBuilder.PrepeareContactsForExport(contacts);
+            IEnumerable<ExportContact> excelContacts = _modelBuilder.PrepeareContactsForExport(contacts);
 
             Logger.Logger.Log.Info("Директор запрашивает преобразование данных в конечный файл");
 
@@ -63,7 +63,7 @@ namespace Navicon.Serializer
 
             Logger.Logger.Log.Info("Директор запрашивает сохранение данных в файл");
 
-            _fileManager.WriteInFile(excelFile, fileName, filePath, _serializer.GetFileFormate());
+            _fileManager.WriteInFile(excelFile, fileName, filePath, _serializer.GetFileFormat());
         }
     }
 }

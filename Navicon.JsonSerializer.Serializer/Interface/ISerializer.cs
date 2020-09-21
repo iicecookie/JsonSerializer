@@ -8,8 +8,8 @@ namespace Navicon.Serializer.Serializing
 {
     public interface ISerializer
     {
-        Task<byte[]> GetContactsPackaged(IEnumerable<ExcelContact> Contacts);
+        Task<byte[]> GetContactsPackaged(IEnumerable<ExportContact> Contacts);
 
-        string GetFileFormate();
+        string GetFileFormat();
     }
 }
