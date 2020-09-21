@@ -21,6 +21,8 @@ namespace Navicon.Serializer.DAL.ModelBuilder
             excelContacts = OrderExcelContactsByName(excelContacts);
             excelContacts = SetId(excelContacts);
 
+            Logger.Logger.Log.Info($"ModelBuilder преобразовал контакты для экспорта");
+
             return excelContacts;
         }
 

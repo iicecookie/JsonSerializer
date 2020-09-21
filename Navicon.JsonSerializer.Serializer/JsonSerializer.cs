@@ -1,4 +1,5 @@
-﻿using Navicon.Serializer.Metadata.Attributes.Serializing;
+﻿using Navicon.Serializer.DAL.Models;
+using Navicon.Serializer.Metadata.Attributes.Serializing;
 using Navicon.Serializer.Models;
 using Navicon.Serializer.Models.Enums;
 using System;
@@ -7,11 +8,22 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Navicon.Serializer.Serializing
 {
-    public class JsonSerializer
+    public class JsonSerializer :ISerializer
     {
+        public async Task<byte[]> GetContactsPackaged(IEnumerable<ExcelContact> Contacts)
+        {
+            return Encoding.Unicode.GetBytes(Serialize(Contacts));
+        }
+
+        public string GetFileFormate()
+        {
+            return "json";
+        }
+
         #region Serializing
         /// <summary>
         /// Преобразование списка объектов в JSON формат
@@ -93,7 +105,7 @@ namespace Navicon.Serializer.Serializing
         /// <param name="propertyInfo">информация о свойстве</param>
         /// <param name="obj">класс-владелец свойства</param>
         /// <returns>сериализованое представление значения</returns>
-        public string SerializePropertyValue(PropertyInfo propertyInfo, object obj)
+        private string SerializePropertyValue(PropertyInfo propertyInfo, object obj)
         {
             if (propertyInfo.PropertyType == typeof(Address))
             {
@@ -186,7 +198,7 @@ namespace Navicon.Serializer.Serializing
         /// </summary>
         /// <param name="serializedText">Текст Json формата</param>
         /// <returns>Dictionary<name,value></returns>
-        public object DeserializeJsonInDictionary(string serializedText)
+        private object DeserializeJsonInDictionary(string serializedText)
         {
             var nameValues = new Dictionary<string, object>();
 

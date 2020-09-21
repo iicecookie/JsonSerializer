@@ -78,6 +78,9 @@ namespace Navicon.Serializer.DAL.DataSorce
 
                 contacts.Add(contact);
             }
+
+            Logger.Logger.Log.Info($"Фабрика выдала {count} случайных контактов");
+
             return contacts;
         }
     }

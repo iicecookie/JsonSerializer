@@ -4,10 +4,7 @@ using Navicon.Serializer.DAL.ModelBuilder;
 using Navicon.Serializer.Serializing;
 using Navicon.Serializer.DAL.DataSorce;
 using Ninject;
-using Navicon.Serializer.DAL.Interfaces;
-using System.Collections.Specialized;
-using System.Configuration;
-using Navicon.Serializer.Loger;
+using Navicon.Serializer.Logger;
 
 namespace Navicon.Serializer
 {
@@ -15,12 +12,13 @@ namespace Navicon.Serializer
     {
         static Program()
         {
-            Logger.InitLogger();
+            Logger.Logger.InitLogger();
         }
 
         static void Main(string[] args)
         {
-            Logger.Log.Info("Начало работы приложения");
+            Logger.Logger.Log.Info("Начало работы приложения");
+
 
             //  IKernel ninjectKernel = new StandardKernel();
             //
@@ -31,13 +29,11 @@ namespace Navicon.Serializer
             //  var collection = new ServiceCollection();
             //  collection.AddScoped<IDemoService, DemoService>();
 
-            Logger.Log.Error("Ошибочка вышла!");
-
             Director director = new Director(new ContactFabric(), new ModelBuilder(), new CSVSerializer(), new FileManager());
 
             director.CreateAndFillExcelFile();
 
-            Logger.Log.Info("Конец работы приложения");
+            Logger.Logger.Log.Info("Конец работы приложения");
         }
 
         //  Contact contact1 = new Contact(

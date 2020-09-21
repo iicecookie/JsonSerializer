@@ -5,11 +5,9 @@ using System.Text;
 
 namespace Navicon.Serializer.DAL.Interfaces
 {
-    public interface IDataSorce//<T>
+    public interface IDataSorce
     {
-      //  IEnumerable<T> GetAll();
 
-        IEnumerable<Contact>//<T> 
-            GetContacts(int count);
+        IEnumerable<Contact> GetContacts(int count);
     }
 }

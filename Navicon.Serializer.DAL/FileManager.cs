@@ -2,7 +2,7 @@
 using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
-using System.Threading.Tasks;
+using System.Text;
 
 namespace Navicon.Serializer.DAL
 {
@@ -16,25 +16,7 @@ namespace Navicon.Serializer.DAL
         /// <param name="path">Путь к файлу</param>
         public void WriteInFile(string Text, string fileName, string path = @"C:\Navicon\JsonSerializer", string fileFormat = "txt")
         {
-            if (IsValidPath(path) == false)
-            {
-                throw new ArgumentException("Путь к файлу не корректен");
-            }
-
-            DirectoryInfo dirInfo = new DirectoryInfo(path);
-
-            if (dirInfo.Exists == false)
-            {
-                dirInfo.Create();
-            }
-
-            using (FileStream fstream = new FileStream($"{path}\\{fileName}.{fileFormat}", FileMode.Create))
-            {
-                byte[] array = System.Text.Encoding.Default.GetBytes(Text);
-
-                fstream.Write(array, 0, array.Length);
-            }
-
+            WriteInFile(Encoding.Unicode.GetBytes(Text), fileName, path, fileFormat);
         }
 
         /// <summary>
@@ -47,6 +29,7 @@ namespace Navicon.Serializer.DAL
         {
             if (IsValidPath(path) == false)
             {
+                Logger.Logger.Log.Error($"Путь {path} некорректен");
                 throw new ArgumentException("Путь к файлу не корректен");
             }
 
@@ -54,12 +37,11 @@ namespace Navicon.Serializer.DAL
 
             var isOverridable = bool.Parse(ConfigurationManager.AppSettings.Get("OverrideFile"));
 
-
             if (dirInfo.Exists == true)
             {
                 if (isOverridable == false)
                 {
-                    //Logger.Log.Error("Ошибочка вышла!");
+                    Logger.Logger.Log.Error($"Файл {fileName} уже существует");
                     throw new IOException("file already exist, check config file");
                 }
             }
@@ -72,6 +54,8 @@ namespace Navicon.Serializer.DAL
             {
                 fstream.Write(Text, 0, Text.Length);
             }
+
+            Logger.Logger.Log.Info($"Файл {fileName}.{fileFormat} записан в {path}");
         }
 
         /// <summary>
