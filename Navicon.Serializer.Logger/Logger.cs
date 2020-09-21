@@ -1,20 +1,15 @@
 ﻿using log4net;
 using log4net.Config;
-using System;
 
 namespace Navicon.Serializer.Logger
 {
     public static class Logger
     {
-        private static ILog log = LogManager.GetLogger("LOGGER");
+        public static readonly ILog Log;
 
-        public static ILog Log
+        static Logger()
         {
-            get { return log; }
-        }
-
-        public static void InitLogger()
-        {
+            Log = LogManager.GetLogger("LOGGER");
 
             XmlConfigurator.Configure();
         }

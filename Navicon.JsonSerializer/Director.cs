@@ -1,11 +1,9 @@
-﻿using Navicon.Serializer.DAL;
-using Navicon.Serializer.DAL.ModelBuilder;
-using Navicon.Serializer.DAL.Models;
-using Navicon.Serializer.Models;
+﻿using Navicon.Serializer.DAL.ModelBuilder;
 using Navicon.Serializer.DAL.Interfaces;
-using System.Collections.Generic;
+using Navicon.Serializer.DAL.Models;
 using Navicon.Serializer.Serializing;
-using System.Threading.Tasks;
+using Navicon.Serializer.Models;
+using System.Collections.Generic;
 using System;
 
 namespace Navicon.Serializer
@@ -18,9 +16,9 @@ namespace Navicon.Serializer
              
         private readonly ISerializer _serializer;
              
-        private readonly FileManager _fileManager;
+        private readonly IFileManager _fileManager;
 
-        public Director(IDataSorce dataSorce, ModelBuilder modelBuilder, ISerializer serializer, FileManager fileManager)
+        public Director(IDataSorce dataSorce, ModelBuilder modelBuilder, ISerializer serializer, IFileManager fileManager)
         {
             if (dataSorce    == null)
             {
@@ -52,15 +50,19 @@ namespace Navicon.Serializer
         public async void CreateAndFillExcelFile(string fileName = "File", string filePath = @"C:\Navicon\JsonSerializer")
         {
             Logger.Logger.Log.Info("Директор запрашивает список контактов");
-            List<Contact> contacts = (List<Contact>)_dataSorce.GetContacts(10);
+
+            IEnumerable<Contact> contacts = _dataSorce.GetContacts(10);
 
             Logger.Logger.Log.Info("Директор запрашивает подготовку списка к формату экспорта");
-            List<ExcelContact> excelContacts = _modelBuilder.PrepeareContactForExcel(contacts);
+
+            IEnumerable<ExcelContact> excelContacts = _modelBuilder.PrepeareContactsForExport(contacts);
 
             Logger.Logger.Log.Info("Директор запрашивает преобразование данных в конечный файл");
+
             byte[] excelFile = await _serializer.GetContactsPackaged(excelContacts);
 
             Logger.Logger.Log.Info("Директор запрашивает сохранение данных в файл");
+
             _fileManager.WriteInFile(excelFile, fileName, filePath, _serializer.GetFileFormate());
         }
     }

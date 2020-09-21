@@ -1,20 +1,13 @@
-﻿using System;
-using Navicon.Serializer.DAL;
+﻿using Navicon.Serializer.DAL;
 using Navicon.Serializer.DAL.ModelBuilder;
 using Navicon.Serializer.Serializing;
 using Navicon.Serializer.DAL.DataSorce;
-using Ninject;
 using Navicon.Serializer.Logger;
 
 namespace Navicon.Serializer
 {
     class Program
     {
-        static Program()
-        {
-            Logger.Logger.InitLogger();
-        }
-
         static void Main(string[] args)
         {
             Logger.Logger.Log.Info("Начало работы приложения");

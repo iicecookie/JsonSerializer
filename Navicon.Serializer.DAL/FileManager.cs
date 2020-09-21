@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
 using System.Text;
+using Navicon.Serializer.DAL.Interfaces;
 
 namespace Navicon.Serializer.DAL
 {
-    public class FileManager
+    public class FileManager : IFileManager
     {
         /// <summary>
         /// Записывает текст в файл

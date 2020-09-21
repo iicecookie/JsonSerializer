@@ -14,9 +14,9 @@ namespace Navicon.Serializer.DAL.ModelBuilder
         /// </summary>
         /// <param name="contacts">Список контактов</param>
         /// <returns>Готовый к записи в Excel список контактов</returns>
-        public List<ExcelContact> PrepeareContactForExcel(List<Contact> contacts)
+        public IEnumerable<ExcelContact> PrepeareContactsForExport(IEnumerable<Contact> contacts)
         {
-            List<ExcelContact> excelContacts = ConvertContactToExcelContact(contacts);
+            IEnumerable<ExcelContact> excelContacts = ConvertContactToExcelContact(contacts);
 
             excelContacts = OrderExcelContactsByName(excelContacts);
             excelContacts = SetId(excelContacts);
@@ -31,7 +31,7 @@ namespace Navicon.Serializer.DAL.ModelBuilder
         /// </summary>
         /// <param name="contacts">список контактов</param>
         /// <returns>список ExcelContact</returns>
-        public List<ExcelContact> ConvertContactToExcelContact(List<Contact>contacts)
+        public IEnumerable<ExcelContact> ConvertContactToExcelContact(IEnumerable<Contact> contacts)
         {
             var excelContacts = new List<ExcelContact>();
 
@@ -61,7 +61,7 @@ namespace Navicon.Serializer.DAL.ModelBuilder
         /// </summary>
         /// <param name="contacts">Список контактов</param>
         /// <returns>Отсортированый список ExcelContact</returns>
-        public List<ExcelContact> OrderExcelContactsByName(List<ExcelContact> contacts)
+        public IEnumerable<ExcelContact> OrderExcelContactsByName(IEnumerable<ExcelContact> contacts)
         {
             return contacts.OrderBy(sc => sc.SecondName).ThenBy(fi => fi.FirstName).ToList();
         }
@@ -71,7 +71,7 @@ namespace Navicon.Serializer.DAL.ModelBuilder
         /// </summary>
         /// <param name="contacts">Список контактов</param>
         /// <returns>Список ExcelContact с установлеными идентификаторами</returns>
-        public List<ExcelContact> SetId(List<ExcelContact> contacts)
+        public IEnumerable<ExcelContact> SetId(IEnumerable<ExcelContact> contacts)
         {
             int i = 1;
             foreach(var contact in contacts)
