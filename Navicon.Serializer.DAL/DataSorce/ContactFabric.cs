@@ -1,8 +1,9 @@
-﻿using Navicon.Serializer.DAL.Interfaces;
-using Navicon.Serializer.Models;
+﻿using System.Collections.Generic;
+using Navicon.Serializer.DAL.Interfaces;
 using Navicon.Serializer.Models.Enums;
+using Navicon.Serializer.Models;
 using System;
-using System.Collections.Generic;
+using log4net;
 
 namespace Navicon.Serializer.DAL.DataSorce
 {
@@ -40,6 +41,13 @@ namespace Navicon.Serializer.DAL.DataSorce
                                             "Melbourne", "Munich", "Copenhagen",
                                             "Zurich", "Vienna",
         };
+
+        private readonly ILog _log;
+
+        public ContactFabric(ILog log)
+        {
+            _log = log;
+        }
 
         /// <summary>
         /// Создает список случайно сгенерированых контактов
@@ -79,7 +87,7 @@ namespace Navicon.Serializer.DAL.DataSorce
                 contacts.Add(contact);
             }
 
-            Logger.Logger.Log.Info($"Фабрика выдала {count} случайных контактов");
+            _log.Info($"Фабрика выдала {count} случайных контактов");
 
             return contacts;
         }

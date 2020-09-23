@@ -5,11 +5,18 @@ using System.Linq;
 using System;
 using OfficeOpenXml;
 using System.Threading.Tasks;
+using log4net;
 
 namespace Navicon.Serializer.Serializing
 {
     public class ExcelSerializer : ISerializer
     {
+        private readonly ILog _log;
+        public ExcelSerializer(ILog log)
+        {
+            _log = log;
+        }
+
         /// <summary>
         /// Добавляет все контакты построчно в указаный Excel документ на первую страницу
         /// </summary>
@@ -37,7 +44,9 @@ namespace Navicon.Serializer.Serializing
                 }
             }
 
-            return excelPackage.GetAsByteArray();
+            _log.Info($"ExcelSerializer Преобразовал список контактов в Xlsx формат");
+
+            return await excelPackage.GetAsByteArrayAsync();
         }
 
         /// <summary>

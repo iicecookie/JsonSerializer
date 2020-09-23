@@ -1,7 +1,7 @@
 ﻿using log4net;
 using log4net.Config;
 
-namespace Navicon.Serializer.Logger
+namespace Navicon.Serializer.Logging
 {
     public static class Logger
     {
@@ -13,5 +13,7 @@ namespace Navicon.Serializer.Logger
 
             XmlConfigurator.Configure();
         }
+
+        public static ILog GetLogger() => Log;
     }
 }

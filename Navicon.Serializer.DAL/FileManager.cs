@@ -2,12 +2,20 @@
 using System.Configuration;
 using System.IO;
 using System.Text;
+using log4net;
 using Navicon.Serializer.DAL.Interfaces;
 
 namespace Navicon.Serializer.DAL
 {
     public class FileManager : IFileManager
     {
+        private readonly ILog _log;
+
+        public FileManager(ILog log)
+        {
+            _log = log;
+        }
+
         /// <summary>
         /// Записывает текст в файл
         /// </summary>
@@ -29,7 +37,7 @@ namespace Navicon.Serializer.DAL
         {
             if (IsValidPath(path) == false)
             {
-                Logger.Logger.Log.Error($"Путь {path} некорректен");
+                _log.Error($"Путь {path} некорректен");
                 throw new ArgumentException("Путь к файлу не корректен");
             }
 
@@ -48,7 +56,7 @@ namespace Navicon.Serializer.DAL
 
                 if (isOverridable == false)
                 {
-                    Logger.Logger.Log.Error($"Файл {fileName}.{fileFormat} уже существует в {path}");
+                    _log.Error($"Файл {fileName}.{fileFormat} уже существует в {path}");
                     throw new IOException("file already exist, check config file");
                 }
             }
@@ -58,7 +66,7 @@ namespace Navicon.Serializer.DAL
                 fstream.Write(Text, 0, Text.Length);
             }
 
-            Logger.Logger.Log.Info($"Файл {fileName}.{fileFormat} записан в {path}");
+            _log.Info($"Файл {fileName}.{fileFormat} записан в {path}");
         }
 
         /// <summary>

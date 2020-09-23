@@ -1,4 +1,5 @@
-﻿using Navicon.Serializer.DAL.Models;
+﻿using log4net;
+using Navicon.Serializer.DAL.Models;
 using Navicon.Serializer.Models;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,13 @@ namespace Navicon.Serializer.DAL.ModelBuilder
 {
     public class ModelBuilder
     {
+        private readonly ILog _log;
+
+        public ModelBuilder(ILog log)
+        {
+            _log = log;
+        }
+
         /// <summary>
         /// Выполняет преобразование списка Contact в пригодный для записи в Excel формат
         /// сортирует и устанавливает идентификаторы
@@ -21,7 +29,7 @@ namespace Navicon.Serializer.DAL.ModelBuilder
             excelContacts = OrderExcelContactsByName(excelContacts);
             excelContacts = SetId(excelContacts);
 
-            Logger.Logger.Log.Info($"ModelBuilder преобразовал контакты для экспорта");
+            _log.Info($"ModelBuilder преобразовал контакты для экспорта");
 
             return excelContacts;
         }

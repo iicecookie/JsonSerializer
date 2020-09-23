@@ -8,11 +8,13 @@
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.10" />
     <PackageReference Include="Ninject" Version="3.3.4" />
+    <PackageReference Include="Ninject.Extensions.Factory" Version="3.3.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Navicon.JsonSerializer.Models\Navicon.Serializer.Models.csproj" />
     <ProjectReference Include="..\Navicon.JsonSerializer.Serializer\Navicon.Serializer.Serializing.csproj" />
+    <ProjectReference Include="..\Navicon.Serializer.Logger\Navicon.Serializer.Logger.csproj" />
   </ItemGroup>
 
 </Project>

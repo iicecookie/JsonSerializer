@@ -5,6 +5,8 @@ using Navicon.Serializer.Serializing;
 using Navicon.Serializer.Models;
 using System.Collections.Generic;
 using System;
+using Navicon.Serializer.Logging;
+using log4net;
 
 namespace Navicon.Serializer
 {
@@ -18,26 +20,32 @@ namespace Navicon.Serializer
              
         private readonly IFileManager _fileManager;
 
-        public Director(IDataSorce dataSorce, ModelBuilder modelBuilder, ISerializer serializer, IFileManager fileManager)
+        private readonly ILog _log;
+
+        public Director(IDataSorce dataSorce, ModelBuilder modelBuilder, ISerializer serializer, IFileManager fileManager, ILog log)
         {
+            if (log == null)
+            {
+                throw new ArgumentException($"{nameof(log)} is null");
+            }
             if (dataSorce    == null)
             {
-                Logger.Logger.Log.Error($"{nameof(dataSorce)} is null");
+                log.Error($"{nameof(dataSorce)} is null");
                 throw new ArgumentException($"{nameof(dataSorce)} is null");
             }
             if (modelBuilder == null)
             {
-                Logger.Logger.Log.Error($"{nameof(modelBuilder)} is null");
+                log.Error($"{nameof(modelBuilder)} is null");
                 throw new ArgumentException($"{nameof(modelBuilder)} is null");
             }
             if (serializer   == null)
             {
-                Logger.Logger.Log.Error($"{nameof(serializer)} is null");
+                log.Error($"{nameof(serializer)} is null");
                 throw new ArgumentException($"{nameof(serializer)} is null");
             }
             if (fileManager  == null)
             {
-                Logger.Logger.Log.Error($"{nameof(fileManager)} is null");
+                log.Error($"{nameof(fileManager)} is null");
                 throw new ArgumentException($"{nameof(fileManager)} is null");
             }
 
@@ -45,23 +53,24 @@ namespace Navicon.Serializer
             _modelBuilder = modelBuilder;
             _serializer   = serializer;
             _fileManager  = fileManager;
+            _log = log;
         }
 
         public async void CreateAndFillFile(string fileName = "File", string filePath = @"C:\Navicon\JsonSerializer")
         {
-            Logger.Logger.Log.Info("Директор запрашивает список контактов");
+            _log.Info("Директор запрашивает список контактов");
 
             IEnumerable<Contact> contacts = _dataSorce.GetContacts(10);
 
-            Logger.Logger.Log.Info("Директор запрашивает подготовку списка к формату экспорта");
+            _log.Info("Директор запрашивает подготовку списка к формату экспорта");
 
             IEnumerable<ExportContact> excelContacts = _modelBuilder.PrepeareContactsForExport(contacts);
 
-            Logger.Logger.Log.Info("Директор запрашивает преобразование данных в конечный файл");
+            _log.Info("Директор запрашивает преобразование данных в конечный файл");
 
             byte[] excelFile = await _serializer.GetContactsPackaged(excelContacts);
 
-            Logger.Logger.Log.Info("Директор запрашивает сохранение данных в файл");
+            _log.Info("Директор запрашивает сохранение данных в файл");
 
             _fileManager.WriteInFile(excelFile, fileName, filePath, _serializer.GetFileFormat());
         }

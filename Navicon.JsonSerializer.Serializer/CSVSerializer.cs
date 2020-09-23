@@ -7,11 +7,18 @@ using System.IO;
 using System.Text;
 using Navicon.Serializer.Models;
 using System.Threading.Tasks;
+using log4net;
 
 namespace Navicon.Serializer.Serializing
 {
     public class CSVSerializer : ISerializer
     {
+        private readonly ILog _log;
+        public CSVSerializer(ILog log)
+        {
+            _log = log;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -42,6 +49,8 @@ namespace Navicon.Serializer.Serializing
             }
 
             streamWriter.Flush();
+
+            _log.Info($"CSVSerializer Преобразовал список контактов в CSV формат");
 
             return memoryStream.GetBuffer();
         }

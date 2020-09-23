@@ -1,4 +1,5 @@
-﻿using Navicon.Serializer.DAL.Models;
+﻿using log4net;
+using Navicon.Serializer.DAL.Models;
 using Navicon.Serializer.Metadata.Attributes.Serializing;
 using Navicon.Serializer.Models;
 using Navicon.Serializer.Models.Enums;
@@ -14,6 +15,12 @@ namespace Navicon.Serializer.Serializing
 {
     public class JsonSerializer :ISerializer
     {
+        private readonly ILog _log;
+        public JsonSerializer(ILog log)
+        {
+            _log = log;
+        }
+
         public async Task<byte[]> GetContactsPackaged(IEnumerable<ExportContact> Contacts)
         {
             return Encoding.Unicode.GetBytes(Serialize(Contacts));
